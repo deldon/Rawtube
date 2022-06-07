@@ -18,12 +18,12 @@ CREATE TABLE "rawtube_video" (
     url_file TEXT NOT NULL UNIQUE,
     title TEXT NOT NULL,
     description TEXT,
-    url_Thumbnail TEXT,
+    url_thumbnail TEXT,
     public BOOLEAN NOT NULL,
     views INT NOT NULL DEFAULT 0,
     duration TEXT,
     user_id INT REFERENCES rawtube_user(id) ON DELETE SET NULL,
-    release_date TIMESTAMPTZ NOT NULL,
+    release_date TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

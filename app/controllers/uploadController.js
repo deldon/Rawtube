@@ -1,6 +1,7 @@
 const debug = require('debug')('uploadController');
 
-//const dataMapper = require('../dataMapper/dataMapper');
+const ffmpeg = require('./ffmpegController');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
 
@@ -10,20 +11,25 @@ module.exports = {
         let uploadPath;
 
         if (!req.files || Object.keys(req.files).length === 0) {
-            return res.status(400).send('No files were uploaded.');
+            return res.status(400).json('No files were uploaded.');
         }
 
         // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
         sampleFile = req.files.sampleFile;
         uploadPath = './public/videoTemp/' + sampleFile.name;
-        debug(uploadPath)
+        //debug(uploadPath)
+
         // Use the mv() method to place the file somewhere on your server
         sampleFile.mv(uploadPath, function (err) {
             if (err)
-                return res.status(500).send(err);
+                return res.status(500).json(err);
+            const videoId = uuidv4();
+            res.json({video_id:videoId});
 
-            res.send('File uploaded!');
-            //videoEncode(sampleFile.name)
+            ffmpeg.thumbnail(sampleFile.name,videoId)
+            ffmpeg.encoder(sampleFile.name,videoId)
+            const duration = ffmpeg.videoDuration(sampleFile.name)
+            debug('******************************************************',duration);
         });
     }
 

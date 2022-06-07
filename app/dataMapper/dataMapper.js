@@ -3,7 +3,7 @@ const debug = require('debug')('dataMapper');
 const dataBase = require('../dataBase');
 const ApiError = require('../errors/apiError');
 
-const dataMapper = {
+module.exports = {
   async getAllIncidents() {
     const query = 'SELECT * FROM incident;';
     const data = (await dataBase.query(query)).rows;

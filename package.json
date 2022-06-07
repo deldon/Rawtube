@@ -1,0 +1,27 @@
+{
+  "name": "node-skeleton",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "DEBUG=*,-express:*,-body-parser:*,-send* node-dev index.js --no-notify",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deldon/Node-skeleton.git"
+  },
+  "author": "Deldon Romain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deldon/Node-skeleton/issues"
+  },
+  "homepage": "https://github.com/deldon/Node-skeleton#readme",
+  "dependencies": {
+    "debug": "^4.3.4",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "pg": "^8.7.3"
+  }
+}

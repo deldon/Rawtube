@@ -3,6 +3,9 @@ const router = require('./routers/router');
 
 const app = express();
 
+const fileUpload = require('express-fileupload');
+app.use(fileUpload());
+
 //app.set('view engine', 'pug');
 //app.set('views', './app/views');
 app.use(express.static('./public'));

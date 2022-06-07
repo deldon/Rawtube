@@ -3,9 +3,10 @@ const express = require('express');
 const router = express.Router();
 const controllerHandler = require('../helpers/controllerHandler');
 
-const mainController = require('../controllers/mainController');
+const uploadController = require('../controllers/uploadController')
 
-router.get('/', controllerHandler(mainController.helloWord));
 
+// UPLOAD
+router.post('/upload', controllerHandler(uploadController.uploadVideo))
 
 module.exports = router;

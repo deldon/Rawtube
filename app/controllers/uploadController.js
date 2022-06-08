@@ -4,6 +4,9 @@ const ffmpeg = require('./ffmpegController');
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
+    uploadTemplate: (req,res,next) => {
+        res.render('pages/upload')
+    },
 
     uploadVideo: async (req, res, next) => {
         debug('videoUpload')

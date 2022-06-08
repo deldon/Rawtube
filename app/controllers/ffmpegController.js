@@ -6,6 +6,11 @@ const fs = require('fs');
 
 const ffmpeg = {
 
+    /**
+     * Encoded video in .webm 720p 500kb/s
+     * @param {string} videoSrcPath Original video path 
+     * @param {string} video_id Identify encoded video
+     */
     encoder: async (videoSrcPath, videoId) => {
 
         try {
@@ -19,8 +24,12 @@ const ffmpeg = {
 
     },
 
+    /**
+     * @param {string} fileName Original video path
+     * @param {string} videoId Identify encoded video
+     * @param {Number} duration Video length
+     */
     thumbnail: async (fileName, videoId, duration) => {
-
 
         try {
             const divi = Math.floor(duration / 3)
@@ -30,13 +39,17 @@ const ffmpeg = {
             var timeString = date.toISOString().substr(11, 8) + '.000';
 
             debug('thumbnail called at :' + timeString)
-            const bl = await spawn2('ffmpeg', ['-i', './public/videoTemp/' + fileName, '-ss', timeString , '-vframes', '1', './public/thumbnail/' + videoId + '.jpg']);
+            const bl = await spawn2('ffmpeg', ['-i', './public/videoTemp/' + fileName, '-ss', timeString, '-vframes', '1', './public/thumbnail/' + videoId + '.jpg']);
             console.log(bl.toString());
         } catch (e) {
             console.log(e.stderr.toString())
         }
     },
 
+    /**
+     * @param {String} fileName Original video path
+     * @returns {Number} Video length in second
+     */
     videoDuration: async (fileName) => {
 
         try {

@@ -1,0 +1,38 @@
+<%- include('../partials/head'); %>
+<%- include('../partials/navbar'); %>
+<img src="/thumbnail/<%= video_thumbnail %>" width="300px">
+<form ref='uploadForm' 
+id='uploadForm' 
+action='/add_video' 
+method='post' 
+encType="multipart/form-data">
+  <div class="mb-3">
+    <label for="title" class="form-label">Titre</label>
+    <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp">
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea name="description" class="form-control" id="description" rows="3"></textarea>
+  </div>
+
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="public" id="flexRadioDefault1" value="true" checked>
+    <label class="form-check-label" for="flexRadioDefault1">
+      Private
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="public" id="flexRadioDefault2" value="false">
+    <label class="form-check-label" for="flexRadioDefault2">
+      Public
+    </label>
+  </div>
+
+  <input name="url_file" type="hidden" value="<%= video_url %>">
+  <input name="url_trumbnail" type="hidden" value="<%= video_thumbnail %>">
+  <input name="duration" type="hidden" value="<%= duration %>">
+
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<%- include('../partials/footer'); %>

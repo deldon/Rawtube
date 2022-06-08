@@ -17,12 +17,9 @@ module.exports = {
             return res.status(400).json('No files were uploaded.');
         }
 
-        // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
         sampleFile = req.files.sampleFile;
         uploadPath = './public/videoTemp/' + sampleFile.name;
-        //debug(uploadPath)
 
-        // Use the mv() method to place the file somewhere on your server
         sampleFile.mv(uploadPath, async (err) => {
             if (err) {
                 return res.status(500).json(err);
@@ -32,12 +29,12 @@ module.exports = {
 
             const duration = await ffmpeg.videoDuration(sampleFile.name)
             await ffmpeg.thumbnail(sampleFile.name, videoId,duration)
-            //ffmpeg.encoder(sampleFile.name, videoId)
-            //ffmpeg.videoDelete(sampleFile.name)
-            res.json({
+            ffmpeg.encoder(sampleFile.name, videoId)
+            res.render('pages/post_video',{
                 video_id:videoId,
-                video_thumbnail: '/thumbnail/' + videoId + '.jpg',
-                video_url: '/video/' + videoId + '.webm',
+                video_thumbnail: videoId + '.jpg',
+                video_url: videoId + '.webm',
+                watch: '/watch?v=' + videoId,
                 duration: duration
 
             });

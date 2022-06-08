@@ -30,10 +30,10 @@ module.exports = {
 
             const videoId = uuidv4();
 
-            await ffmpeg.encoder(sampleFile.name, videoId)
-            await ffmpeg.thumbnail(sampleFile.name, videoId)
             const duration = await ffmpeg.videoDuration(sampleFile.name)
-            ffmpeg.videoDelete(sampleFile.name)
+            await ffmpeg.thumbnail(sampleFile.name, videoId,duration)
+            //ffmpeg.encoder(sampleFile.name, videoId)
+            //ffmpeg.videoDelete(sampleFile.name)
             res.json({
                 video_id:videoId,
                 video_thumbnail: '/thumbnail/' + videoId + '.jpg',

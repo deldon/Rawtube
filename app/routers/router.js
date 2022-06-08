@@ -13,9 +13,9 @@ router.get('/watch',(req,res)=>{
     res.render('pages/watch',{id:req.query.v})
 })
 
-router.get('/upload', uploadController.uploadTemplate)
 
 // UPLOAD
+router.get('/upload', controllerHandler(uploadController.uploadTemplate))
 router.post('/upload', controllerHandler(uploadController.uploadVideo))
 
 //STREAM

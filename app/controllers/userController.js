@@ -1,5 +1,6 @@
 const debug = require('debug')('userController');
 const bcrypt = require('bcrypt');
+const DataMapper = require('../dataMapper/userDataMapper');
 // const jwt    = require('jsonwebtoken');
 // const SECRET_KEY = process.env.SECRET_KEY;
 // const url_avatar = process.env.URL_SERVER + 'avatar/';
@@ -17,7 +18,7 @@ module.exports = {
                     email: req.body.email,
                     password: encryptedPassword,
                     description: req.body.description,
-                    avatar: 'thumbnail.png',
+                    avatar: req.body.avatar
                 }
      
             const newUser = await DataMapper.addUser(form);

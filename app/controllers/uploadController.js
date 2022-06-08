@@ -20,22 +20,23 @@ module.exports = {
         //debug(uploadPath)
 
         // Use the mv() method to place the file somewhere on your server
-        sampleFile.mv(uploadPath, async(err)=>{
-            if (err){
+        sampleFile.mv(uploadPath, async (err) => {
+            if (err) {
                 return res.status(500).json(err);
             }
-               
-            const videoId = uuidv4();
-            
 
-            //ffmpeg.thumbnail(sampleFile.name,videoId)
-            await ffmpeg.encoder(sampleFile.name,videoId)
+            const videoId = uuidv4();
+
+            await ffmpeg.encoder(sampleFile.name, videoId)
+            await ffmpeg.thumbnail(sampleFile.name, videoId)
             const duration = await ffmpeg.videoDuration(sampleFile.name)
-           debug('******************************************************----//////////////////----------',duration);
-           res.json({
-               video_id:videoId,
-               duration:duration
-            
+            ffmpeg.videoDelete(sampleFile.name)
+            res.json({
+                video_id:videoId,
+                video_thumbnail: '/thumbnail/' + videoId + '.jpg',
+                video_url: '/video/' + videoId + '.webm',
+                duration: duration
+
             });
         });
     }

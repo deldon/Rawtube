@@ -10,7 +10,7 @@ const videoController = require('../controllers/videoController');
 
 
 // VIDEO
-
+router.get('/',controllerHandler(videoController.getVideoByRelevance))
 router.get('/watch',controllerHandler(videoController.getVideoById))
 
 // MY VIDEO

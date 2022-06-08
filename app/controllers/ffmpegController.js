@@ -17,7 +17,9 @@ const ffmpeg = {
             debug('encoder called')
             const bl = await spawn2('ffmpeg', ['-i', './public/videoTemp/' + videoSrcPath, '-b:v', '491k', '-b:a', '96k', '-r', '25', '-vf', 'scale=-1:720', './public/video/' + videoId + '.webm']);
             console.log(bl.toString());
-            await ffmpeg.videoDelete();
+            debug('video ' + videoSrcPath + 'encoded');
+            await ffmpeg.videoDelete(videoSrcPath);
+            
         } catch (e) {
             console.log(e.stderr.toString())
         }

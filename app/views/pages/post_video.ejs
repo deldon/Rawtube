@@ -8,7 +8,7 @@ method='post'
 encType="multipart/form-data">
   <div class="mb-3">
     <label for="title" class="form-label">Titre</label>
-    <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp">
+    <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp" value="<%= videoName %>">
   </div>
   <div class="mb-3">
     <label for="description" class="form-label">Description</label>
@@ -29,7 +29,7 @@ encType="multipart/form-data">
   </div>
 
   <input name="url_file" type="hidden" value="<%= video_url %>">
-  <input name="url_trumbnail" type="hidden" value="<%= video_thumbnail %>">
+  <input name="url_thumbnail" type="hidden" value="<%= video_thumbnail %>">
   <input name="duration" type="hidden" value="<%= duration %>">
 
 

@@ -7,5 +7,6 @@ module.exports = {
 
     getVideoByRelevance:  (req,res)=>{ 
         res.render('pages/index')
-    }
+    },
+
 }

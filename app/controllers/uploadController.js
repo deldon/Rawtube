@@ -31,6 +31,7 @@ module.exports = {
             await ffmpeg.thumbnail(sampleFile.name, videoId,duration)
             ffmpeg.encoder(sampleFile.name, videoId)
             res.render('pages/post_video',{
+                videoName:sampleFile.name.split('.')[0],
                 video_id:videoId,
                 video_thumbnail: videoId + '.jpg',
                 video_url: videoId + '.webm',

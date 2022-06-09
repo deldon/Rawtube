@@ -7,7 +7,7 @@ const uploadController = require('../controllers/uploadController');
 const streamController = require('../controllers/streamController');
 const myVideoController = require('../controllers/myVideoController');
 const videoController = require('../controllers/videoController');
-
+const userController = require('../controllers/userController');
 
 // VIDEO
 router.get('/',controllerHandler(videoController.getVideoByRelevance))
@@ -22,5 +22,10 @@ router.post('/upload', controllerHandler(uploadController.uploadVideo));
 
 //STREAM
 router.get('/video', controllerHandler(streamController.stream));
+
+//USER
+router.post('/user', controllerHandler(userController.addUser));
+router.patch('/user/:user_id', controllerHandler(userController.updateUser));
+router.delete('/user/:user_id', controllerHandler(userController.deleteUser));
 
 module.exports = router;

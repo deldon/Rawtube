@@ -31,5 +31,39 @@ module.exports = {
             }
         }
 
+    },
+
+    deleteUser: async (req, res, next) => {
+        const userId = req.params.user_id
+        const user = await DataMapper.deleteUser(userId)
+        console.log(req.params)
+        if (user) {
+            debug(`> deleteUser()`);
+            res.json({message:`user :${userId} is removed`, id:Number(userId)});
+        } else {
+            next();
+        }
+
+    },
+
+    updateUser: async (req, res, next) => {
+
+        form = {
+            name: req.body.name,
+            email: req.body.email,
+            description: req.body.description,
+            avatar: req.body.avatar
+        }
+        console.log(form)
+        const user = await DataMapper.updateUser(form, req.params.user_id);
+        console.log(user)
+        if (user) {
+            debug(`> updateUser()`);
+            delete user.password;
+            res.json(user);
+        } else {
+            next();
+        }
     }
+
 }

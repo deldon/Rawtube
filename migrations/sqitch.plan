@@ -3,3 +3,4 @@
 
 init 2022-06-07T09:06:38Z deldon,,, <deldon@deldon-desktop> # init tables
 create_user_functions 2022-06-08T08:08:30Z markS <mark.smaniotto@gmail.com> # Creation of add user function
+update_user_function 2022-06-08T11:49:56Z markS <mark.smaniotto@gmail.com> # Adding update user function

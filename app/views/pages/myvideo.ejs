@@ -5,37 +5,55 @@
 
         <table class="table">
             <thead>
-              <tr>
-                <th scope="col">Video</th>
-                <th scope="col">Titre</th>
-                <th scope="col">Visibilité</th>
-                <th scope="col">Date</th>
-                <th scope="col">Vues</th>
-                <th scope="col">Commentaires</th>
-                <th scope="col"></th>
-              </tr>
+                <tr>
+                    <th scope="col">Video</th>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Visibilité</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Vues</th>
+                    <th scope="col">Commentaires</th>
+                    <th scope="col"></th>
+                </tr>
             </thead>
             <tbody>
                 <% data.forEach(function(datas){ %>
                     <tr>
-                        <th scope="row"><img src="/thumbnail/<%- datas.url_thumbnail %>" width="90" alt=""></th>
-                        <td><%- datas.title %></td>
-                        <td><%- datas.public %></td>
-                        <td><%- datas.release_date %></td>
-                        <td><%- datas.views %></td>
-                        <td><%- datas.commentaries %></td>
+                        <th scope="row">
+                            <a href="/watch?v=<%- datas.id %>">
+                                <img src="/thumbnail/<%- datas.url_thumbnail %>" width="90" alt="">
+                            </a>
+                        </th>
                         <td>
-                            <img src="/icones/ic-twotone-mode-edit.svg" width="25px" alt="">
-                            <img src="/icones/MaterialSymbolsDeleteOutlineRounded.svg" width="25px" alt="">
+                            <%- datas.title %>
                         </td>
-                      </tr>
-                    
-    
-                <% }); %>
+                        <td>
+                            <%- datas.public %>
+                        </td>
+                        <td>
+                            <%- datas.release_date %>
+                        </td>
+                        <td>
+                            <%- datas.views %>
+                        </td>
+                        <td>
+                            <%- datas.commentaries %>
+                        </td>
+                        <td>
+                            <a href="/update/<%- datas.id %>">
+                                <img src="/icones/ic-twotone-mode-edit.svg" width="25px" alt="">
+                            </a>
+                            <a href="">
+                            <img src="/icones/MaterialSymbolsDeleteOutlineRounded.svg" width="25px" alt="">
+                            </a>
+                        </td>
+                    </tr>
+
+
+                    <% }); %>
 
             </tbody>
-          </table>
-        
+        </table>
 
-        
+
+
         <%- include('../partials/footer'); %>

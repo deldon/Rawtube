@@ -50,4 +50,17 @@ module.exports = {
         }
 
     },
+    uptadeMyVideo: async (req, res) => {
+        debug('uptadeMyVideo')
+        const video_id = req.params.id
+        const user_id = 1;
+        const data = await myVideoDataMapper.uptadeMyVideo(video_id,user_id)
+        debug('uptadeMyVideo called');
+        if (data) {
+            res.render('pages/updateVideo', { data })
+        } else {
+            next();
+        }
+
+    },
 }

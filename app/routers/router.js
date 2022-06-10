@@ -15,10 +15,11 @@ router.get('/watch',controllerHandler(videoController.getVideoById))
 
 // MY VIDEO
 router.get('/myvideo', controllerHandler(myVideoController.getAllMyVideo));
+router.get('/update/:id', controllerHandler(myVideoController.uptadeMyVideo));
 router.post('/add_video',controllerHandler(myVideoController.addVideo));
 
 // UPLOAD
-router.get('/upload', controllerHandler(uploadController.uploadTemplate));
+router.get('/upload/', controllerHandler(uploadController.uploadTemplate));
 router.post('/upload', controllerHandler(uploadController.uploadVideo));
 
 //STREAM

@@ -45,4 +45,28 @@ module.exports = {
         
         return data;
       },
+
+      async uptadeMyVideo(video_id,user_id) {
+        debug('uptadeMyVideo');
+
+        const query = `SELECT 
+        rawtube_video.id,
+        rawtube_video.title,
+        rawtube_video.url_thumbnail,
+        rawtube_video.description,
+        rawtube_video.public
+        FROM rawtube_video
+        WHERE rawtube_video.id = $1
+        AND rawtube_video.user_id = $2`;
+
+        const values = [video_id,user_id]
+
+        const data = (await dataBase.query(query,values)).rows[0];
+        debug(`> uptadeMyVideo()`);
+        if (!data) {
+          throw new ApiError('No data found for > uptadeMyVideo()', 400);
+        }
+        
+        return data;
+      },
 }

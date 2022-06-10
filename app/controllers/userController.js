@@ -67,6 +67,10 @@ module.exports = {
         }
     },
 
+    signin: (request, response) => {
+        response.render(`pages/signin`);
+    },
+
     login: async (req,res,next)=> {
 
         const user = await DataMapper.getUserByEmail(req.body.email)

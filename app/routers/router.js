@@ -13,7 +13,8 @@ const isAuthenticated = require('../middleware/security');
 
 
 // LOGIN
-router.post('/signin/', controllerHandler(userController.login));
+router.get('/signin', controllerHandler(userController.signin));
+router.post('/login', controllerHandler(userController.login));
 
 // VIDEO
 router.get('/', controllerHandler(videoController.getVideoByRelevance));

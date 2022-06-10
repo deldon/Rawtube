@@ -1,4 +1,4 @@
-const debug = require('debug')('videoDataMapper');
+const debug = require('debug')('MyVideoDataMapper');
 const dataBase = require('../config/db');
 const ApiError = require('../errors/apiError');
 
@@ -46,8 +46,8 @@ module.exports = {
         return data;
       },
 
-      async uptadeMyVideo(video_id,user_id) {
-        debug('uptadeMyVideo');
+      async getForUptadeMyVideo(video_id,user_id) {
+        debug('getForUptadeMyVideo');
 
         const query = `SELECT 
         rawtube_video.id,
@@ -62,6 +62,36 @@ module.exports = {
         const values = [video_id,user_id]
 
         const data = (await dataBase.query(query,values)).rows[0];
+        debug(`> getForUptadeMyVideo()`);
+        if (!data) {
+          throw new ApiError('No data found for > getForUptadeMyVideo()', 400);
+        }
+        
+        return data;
+      },
+
+      async uptadeMyVideo(form,videoId) {
+        debug('uptadeMyVideo');
+        debug('PUBLIC',Boolean(form.public))
+        let public = Boolean()
+        if(form.public == 'true'){
+          public = true;
+        }else{
+          public = false;
+        }
+
+      const query = `UPDATE rawtube_video
+      SET 
+      title = $1, 
+      description = $2, 
+      public = $3
+      WHERE rawtube_video.id = $4
+      RETURNING *`;
+
+      const values = [form.title,form.description,public,videoId]
+
+        const data = (await dataBase.query(query,values)).rows[0];
+        
         debug(`> uptadeMyVideo()`);
         if (!data) {
           throw new ApiError('No data found for > uptadeMyVideo()', 400);
@@ -69,4 +99,24 @@ module.exports = {
         
         return data;
       },
+
+
+
+      async deleteVideo(video_id,user_id) {
+
+        const query = `
+        DELETE FROM rawtube_video 
+        WHERE id = $1 
+        AND user_id = $2
+        RETURNING *`;
+
+        const value = [video_id,user_id];
+        const data = (await dataBase.query(query, value)).rows[0];
+        debug(`> deleteUser()`);
+        if (!data) {
+          throw new ApiError('No data found for > deleteVideo()', 400);
+        }
+        
+        return data;
+      }
 }

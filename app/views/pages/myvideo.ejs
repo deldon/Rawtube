@@ -42,7 +42,7 @@
                             <a href="/update/<%- datas.id %>">
                                 <img src="/icones/ic-twotone-mode-edit.svg" width="25px" alt="">
                             </a>
-                            <a href="">
+                            <a href="/delete/<%- datas.id %>" onclick="return confirm('Etes vous sûre de vouloir supprimer cette valeur ?');">
                             <img src="/icones/MaterialSymbolsDeleteOutlineRounded.svg" width="25px" alt="">
                             </a>
                         </td>
@@ -53,7 +53,6 @@
 
             </tbody>
         </table>
-
 
 
         <%- include('../partials/footer'); %>

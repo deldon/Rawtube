@@ -3,7 +3,7 @@
 <img src="/thumbnail/<%= data.url_thumbnail%>" width="300px">
 <form ref='uploadForm' 
 id='uploadForm' 
-action='/add_video' 
+action='/update/<%= data.id%>' 
 method='post' 
 encType="multipart/form-data">
   <div class="mb-3">
@@ -16,15 +16,25 @@ encType="multipart/form-data">
   </div>
 
   <div class="form-check">
-    <input class="form-check-input" type="radio" name="public" id="flexRadioDefault1" value="true" checked>
+    <input class="form-check-input" type="radio" name="public" id="flexRadioDefault1" value="true"
+    <% if (data.public) { %>
+      checked
+    <% } %>
+    >
     <label class="form-check-label" for="flexRadioDefault1">
-      Private
+      
+      Public
     </label>
   </div>
   <div class="form-check">
-    <input class="form-check-input" type="radio" name="public" id="flexRadioDefault2" value="false">
+    <input class="form-check-input" type="radio" name="public" id="flexRadioDefault2" value="false"
+    <% if (!data.public) { %>
+      checked
+    <% } %>
+    
+    >
     <label class="form-check-label" for="flexRadioDefault2">
-      Public
+      Private
     </label>
   </div>
 

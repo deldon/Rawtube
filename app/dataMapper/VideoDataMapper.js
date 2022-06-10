@@ -12,6 +12,7 @@ module.exports = {
     const values = [id,newValue]
 
     const data = (await dataBase.query(query,values)).rows[0];
+    
     debug(`> addViewsByid()`);
 
     return data;
@@ -19,7 +20,7 @@ module.exports = {
 
 
   async getVideoById(id) {
-
+    debug(id)
     const query = `SELECT 
     rawtube_video.id,
     rawtube_video.title,
@@ -32,8 +33,7 @@ module.exports = {
     rawtube_user.avatar AS user_avatar
     FROM rawtube_video
     JOIN rawtube_user ON rawtube_user.id = rawtube_video.user_id
-    WHERE rawtube_video.public = true
-    AND rawtube_video.id = $1;`;
+    WHERE rawtube_video.id = $1;`;
 
     const values = [id]
 

@@ -14,6 +14,7 @@ router.get('/',controllerHandler(videoController.getVideoByRelevance))
 router.get('/watch',controllerHandler(videoController.getVideoById))
 
 // MY VIDEO
+router.get('/myvideo', controllerHandler(myVideoController.getAllMyVideo));
 router.post('/add_video',controllerHandler(myVideoController.addVideo));
 
 // UPLOAD

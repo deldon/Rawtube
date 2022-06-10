@@ -5,11 +5,6 @@ const ApiError = require('../errors/apiError');
 module.exports = {
     async addVideo(form) {
 
-        // const query = `INSERT INTO rawtube_video (url_file,title,description,url_thumbnail,public,duration,user_id) VALUES 
-        // ($1,$2,$3,$4,$5,$6,$7) RETURNING *;`;
-
-        // const value = [form.url_file,form.title,form.description,form.url_thumbnail,Boolean(form.public),Number(form.duration),form.user_id];
-        
         const query = `SELECT * FROM add_video($1);`;
         const value = [form];
        
@@ -22,5 +17,32 @@ module.exports = {
         
         return data;
       },
+      
+      async getAllMyVideo(user_id) {
+        debug('getAllMyVideo');
 
+        const query = `SELECT 
+        rawtube_video.id,
+        rawtube_video.url_thumbnail,
+        rawtube_video.duration,
+        rawtube_video.title,
+        rawtube_video.public,
+        rawtube_video.release_date,
+        rawtube_video.views,
+        (SELECT COUNT(*) 
+            FROM rawtube_commentaries
+            WHERE rawtube_commentaries.video_id = rawtube_video.id) AS commentaries
+        FROM rawtube_video
+        WHERE rawtube_video.user_id = $1`;
+
+        const values = [user_id]
+
+        const data = (await dataBase.query(query,values)).rows;
+        debug(`> getAllMyVideo()`);
+        if (!data) {
+          throw new ApiError('No data found for > getAllMyVideo()', 400);
+        }
+        
+        return data;
+      },
 }

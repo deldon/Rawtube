@@ -3,6 +3,21 @@ const dataBase = require('../config/db');
 const ApiError = require('../errors/apiError');
 
 module.exports = {
+
+  async addViewsByid(id,newValue) {
+
+    const query = `UPDATE rawtube_video
+    SET views = $2
+    WHERE id = $1`;
+    const values = [id,newValue]
+
+    const data = (await dataBase.query(query,values)).rows[0];
+    debug(`> addViewsByid()`);
+
+    return data;
+  },
+
+
   async getVideoById(id) {
 
     const query = `SELECT 

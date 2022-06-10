@@ -4,4 +4,9 @@
 <video id="videoPlayer" width="750" controls >
     <source id="videoSource" src="/video?v=<%= data.url_file %>" type="video/webm" />
   </video>
+  <h1><%= data.title %></h1>
+  <p class="card-text"><%- data.user_name %> <%- data.views %> vue</p>
+  <h4>Description</h2>
+  <p><%- data.description %></p> 
+
 <%- include('../partials/footer'); %>

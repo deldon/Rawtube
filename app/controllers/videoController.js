@@ -6,7 +6,7 @@ module.exports = {
         const data = await videoDataMapper.getVideoById(req.query.v);
         debug('getVideoById called');
         if (data) {
-
+            await videoDataMapper.addViewsByid(req.query.v,data.views+1)
             res.render('pages/watch', { data })
         } else {
             next();
@@ -16,13 +16,11 @@ module.exports = {
 
     getVideoByRelevance: async (req, res) => {
 
-
         const data = await videoDataMapper.getVideoByReleaseDate();
         debug('getVideoByRelevance called');
         if (data) {
 
             data.map((x)=>{
-
                 const date = new Date(0);
                 date.setSeconds(x.duration); // specify value for SECONDS here
                 x.duration = date.toISOString().substr(11, 8);

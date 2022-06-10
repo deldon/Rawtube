@@ -9,6 +9,9 @@ const myVideoController = require('../controllers/myVideoController');
 const videoController = require('../controllers/videoController');
 const userController = require('../controllers/userController');
 
+// LOGIN
+router.post('/signin/', controllerHandler(userController.login));
+
 // VIDEO
 router.get('/',controllerHandler(videoController.getVideoByRelevance))
 router.get('/watch',controllerHandler(videoController.getVideoById))

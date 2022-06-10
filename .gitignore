@@ -3,5 +3,8 @@ node_modules
 sqitch.conf
 logs
 /public/videoTemp/*
+!/public/videoTemp/README.md
 /public/video/*
-/public/thumbnail/*
+!/public/video/README.md
+/public/thumbnail/* 
+!/public/thumbnail/README.md

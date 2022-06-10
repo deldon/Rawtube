@@ -11,7 +11,7 @@ module.exports = {
             res.status(400).send("Requires Range header");
         }
     
-        const videoPath = "./public/video/" + req.query.v + '.webm';
+        const videoPath = "./public/video/" + req.query.v;
         const videoSize = fs.statSync(videoPath).size;
 
         const CHUNK_SIZE = 10 ** 6; // 1MB

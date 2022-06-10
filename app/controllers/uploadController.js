@@ -1,5 +1,5 @@
 const debug = require('debug')('uploadController');
-
+const myVideoDataMapper = require ('../dataMapper/myVideoDataMapper')
 const ffmpeg = require('./ffmpegController');
 const { v4: uuidv4 } = require('uuid');
 
@@ -30,14 +30,27 @@ module.exports = {
             const duration = await ffmpeg.videoDuration(sampleFile.name)
             await ffmpeg.thumbnail(sampleFile.name, videoId,duration)
             ffmpeg.encoder(sampleFile.name, videoId)
-            res.render('pages/post_video',{
-                video_id:videoId,
-                video_thumbnail: videoId + '.jpg',
-                video_url: videoId + '.webm',
-                watch: '/watch?v=' + videoId,
-                duration: duration
+//
+            const form = {
+                title: sampleFile.name.split('.')[0],
+                description: '',
+                public: false,
+                url_file: videoId + '.webm',
+                url_thumbnail: videoId + '.jpg',
+                duration: duration,
+                user_id:1
+            }
+            
+            const newVideo = await myVideoDataMapper.addVideo(form);
+            debug(newVideo)
+            if (newVideo) {
+                debug(`> addVideo()`);
+                
+                res.redirect('/update/' + newVideo.id)
+            } else {
+                next();
+            }
 
-            });
         });
     }
 

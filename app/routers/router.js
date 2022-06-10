@@ -9,12 +9,15 @@ const myVideoController = require('../controllers/myVideoController');
 const videoController = require('../controllers/videoController');
 const userController = require('../controllers/userController');
 
+const isAuthenticated = require('../middleware/security');
+
+
 // LOGIN
 router.post('/signin/', controllerHandler(userController.login));
 
 // VIDEO
-router.get('/',controllerHandler(videoController.getVideoByRelevance))
-router.get('/watch',controllerHandler(videoController.getVideoById))
+router.get('/', controllerHandler(videoController.getVideoByRelevance));
+router.get('/watch',controllerHandler(videoController.getVideoById));
 
 // MY VIDEO
 router.post('/add_video',controllerHandler(myVideoController.addVideo));

@@ -6,6 +6,7 @@ module.exports = {
     },
 
     getVideoByRelevance:  (req,res)=>{ 
+        debug(req.session.user)
         res.render('pages/index')
     }
 }

@@ -1,6 +1,7 @@
 const debug = require('debug')('userController');
 const bcrypt = require('bcrypt');
 const DataMapper = require('../dataMapper/userDataMapper');
+
 // const jwt    = require('jsonwebtoken');
 // const SECRET_KEY = process.env.SECRET_KEY;
 // const url_avatar = process.env.URL_SERVER + 'avatar/';
@@ -70,27 +71,33 @@ module.exports = {
 
         const user = await DataMapper.getUserByEmail(req.body.email)
         debug(user);
-
+        
         if(user){
         
         const validPwd = await bcrypt.compare(req.body.password, user.password);
         debug(validPwd);
-        if (!validPwd) {
-            return res.json({
-              error: "Ce n'est pas le bon mot de passe."
-            });
-          }
-          
-          res.redirect(`/`);
+            if (!validPwd) {
+                return res.json({
+                error: "Ce n'est pas le bon mot de passe."
+                });
+            }
+            req.session.regenerate(function (err) {
+                if (err) next(err)
 
+                // store user information in session, typically a user id
+                req.session.user = user
+                req.session.save(function (err) {
+                    if (err) return next(err)
+                    res.redirect('/')
+                  })
+
+            })         
         } else {
             return res.json({
                 error: "Ce n'est pas le bon email."
             });
         }
-
-
-
     }
+    
 
 }

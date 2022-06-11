@@ -9,7 +9,7 @@ module.exports = {
 
     getAllMyVideo: async (req, res) => {
         debug('getAllMyVideo')
-        const user_id = 1;
+        const user_id = req.session.user.id;
         const data = await myVideoDataMapper.getAllMyVideo(user_id)
         debug('getVideoById called');
         if (data) {
@@ -23,7 +23,7 @@ module.exports = {
 
               })
 
-            res.render('pages/myvideo', { data })
+            res.render('pages/myvideo', { data, user:req.session.user })
         } else {
             next();
         }
@@ -32,11 +32,11 @@ module.exports = {
     getForUptadeMyVideo: async (req, res) => {
         debug('getForUptadeMyVideo')
         const video_id = req.params.id
-        const user_id = 1;
+        const user_id = req.session.user.id;
         const data = await myVideoDataMapper.getForUptadeMyVideo(video_id,user_id)
         debug('getForUptadeMyVideo called');
         if (data) {
-            res.render('pages/updateVideo', { data })
+            res.render('pages/updateVideo', { data, user:req.session.user })
         } else {
             next();
         }
@@ -78,7 +78,7 @@ module.exports = {
     },
     deleteVideo: async (req, res, next) => {
         const videoId = req.params.id
-        const userId = 1;
+        const user_id = req.session.user.id;
         const videoDelete = await myVideoDataMapper.deleteVideo(videoId,userId)
 
         if (videoDelete) {

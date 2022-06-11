@@ -7,7 +7,7 @@ module.exports = {
         debug('getVideoById called');
         if (data) {
             await videoDataMapper.addViewsByid(req.query.v,data.views+1)
-            res.render('pages/watch', { data })
+            res.render('pages/watch', { data, user:req.session.user })
         } else {
             next();
         }
@@ -26,8 +26,7 @@ module.exports = {
                 x.duration = date.toISOString().substr(11, 8);
             })
 
-
-            res.render('pages/index', { data })
+            res.render('pages/index', { data, user:req.session.user })
         } else {
             next();
         }

@@ -1,3 +1,6 @@
+
+
+
 <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">RawTube</a>
@@ -9,15 +12,23 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/upload">Upload</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/myvideo">Mes vidéos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
-          </li>
+          <% if (locals.user) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/upload">Upload</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/myvideo">Mes vidéos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href=""><%- locals.user.name %></a>
+            </li>
+          <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/signin">Login</a>
+            </li>
+
+            <% } %>
+
         </ul>
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

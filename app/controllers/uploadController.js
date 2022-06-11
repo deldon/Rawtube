@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
     uploadTemplate: (req,res,next) => {
-        res.render('pages/upload')
+        res.render('pages/upload', { user:req.session.user })
     },
 
     uploadVideo: async (req, res, next) => {
@@ -30,7 +30,7 @@ module.exports = {
             const duration = await ffmpeg.videoDuration(sampleFile.name)
             await ffmpeg.thumbnail(sampleFile.name, videoId,duration)
             ffmpeg.encoder(sampleFile.name, videoId)
-//
+//const user_id = req.session.user.id;
             const form = {
                 title: sampleFile.name.split('.')[0],
                 description: '',
@@ -38,7 +38,7 @@ module.exports = {
                 url_file: videoId + '.webm',
                 url_thumbnail: videoId + '.jpg',
                 duration: duration,
-                user_id:1
+                user_id:req.session.user.id
             }
             
             const newVideo = await myVideoDataMapper.addVideo(form);

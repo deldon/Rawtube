@@ -15,25 +15,22 @@ const isAuthenticated = require('../middleware/security');
 // LOGIN
 router.get('/signin', controllerHandler(userController.signin));
 router.post('/login', controllerHandler(userController.login));
-router.get('/test', isAuthenticated.isAuthenticated, (req, res, next) =>{
-    console.log('ok');
-    next();
-});
+
 
 // VIDEO
 router.get('/', controllerHandler(videoController.getVideoByRelevance));
 router.get('/watch',controllerHandler(videoController.getVideoById));
 
 // MY VIDEO
-router.get('/myvideo', controllerHandler(myVideoController.getAllMyVideo));
-router.get('/update/:id', controllerHandler(myVideoController.getForUptadeMyVideo));
-router.post('/update/:id', controllerHandler(myVideoController.UptadeMyVideo));
-router.get('/delete/:id', controllerHandler(myVideoController.deleteVideo));
-router.post('/add_video',controllerHandler(myVideoController.addVideo));
+router.get('/myvideo', isAuthenticated, controllerHandler(myVideoController.getAllMyVideo));
+router.get('/update/:id', isAuthenticated, controllerHandler(myVideoController.getForUptadeMyVideo));
+router.post('/update/:id', isAuthenticated, controllerHandler(myVideoController.UptadeMyVideo));
+router.get('/delete/:id', isAuthenticated, controllerHandler(myVideoController.deleteVideo));
+router.post('/add_video', isAuthenticated, controllerHandler(myVideoController.addVideo));
 
 // UPLOAD
-router.get('/upload/', controllerHandler(uploadController.uploadTemplate));
-router.post('/upload', controllerHandler(uploadController.uploadVideo));
+router.get('/upload/', isAuthenticated , controllerHandler(uploadController.uploadTemplate));
+router.post('/upload', isAuthenticated , controllerHandler(uploadController.uploadVideo));
 
 //STREAM
 router.get('/video', controllerHandler(streamController.stream));

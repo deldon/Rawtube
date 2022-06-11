@@ -2,8 +2,7 @@ const ApiError = require('../errors/apiError');
 const debug = require('debug')('security');
 const session = ('express-session');
 
-module.exports = {
-    isAuthenticated (req, res, next) {
+module.exports = (req, res, next) => {
     //     if (req.session.user) next()
     //     else next()
     //   }
@@ -14,4 +13,3 @@ module.exports = {
         }
         else next();
     }
-}

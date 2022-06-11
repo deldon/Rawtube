@@ -17,7 +17,9 @@ module.exports = {
         const CHUNK_SIZE = 10 ** 6; // 1MB
         const start = Number(range.replace(/\D/g, ""));
         const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-        debug('stream called | ', req.query.v + ' | ' + start)
+
+        debug('stream called | ', req.query.v + ' | ' + start);
+
         const contentLength = end - start + 1;
         const headers = {
             "Content-Range": `bytes ${start}-${end}/${videoSize}`,

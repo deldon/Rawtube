@@ -1,15 +1,16 @@
 const debug = require('debug')('uploadController');
-const myVideoDataMapper = require ('../dataMapper/myVideoDataMapper')
+const myVideoDataMapper = require ('../dataMapper/myVideoDataMapper');
 const ffmpeg = require('./ffmpegController');
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
     uploadTemplate: (req,res,next) => {
+        debug('uploadTemplate');
         res.render('pages/upload', { user:req.session.user })
     },
 
     uploadVideo: async (req, res, next) => {
-        debug('videoUpload')
+        debug('videoUpload');
         let sampleFile;
         let uploadPath;
 
@@ -27,10 +28,10 @@ module.exports = {
 
             const videoId = uuidv4();
 
-            const duration = await ffmpeg.videoDuration(sampleFile.name)
-            await ffmpeg.thumbnail(sampleFile.name, videoId,duration)
-            ffmpeg.encoder(sampleFile.name, videoId)
-//const user_id = req.session.user.id;
+            const duration = await ffmpeg.videoDuration(sampleFile.name);
+            await ffmpeg.thumbnail(sampleFile.name, videoId,duration);
+            ffmpeg.encoder(sampleFile.name, videoId);
+
             const form = {
                 title: sampleFile.name.split('.')[0],
                 description: '',
@@ -42,7 +43,7 @@ module.exports = {
             }
             
             const newVideo = await myVideoDataMapper.addVideo(form);
-            debug(newVideo)
+            
             if (newVideo) {
                 debug(`> addVideo()`);
                 

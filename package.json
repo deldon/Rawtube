@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "DEBUG=*,-express:*,-body-parser:*,-send* node-dev index.js --no-notify",
+    "dev": "DEBUG=*,-express:*,-body-parser:*,-send*,-express-session:* node-dev index.js --no-notify",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },

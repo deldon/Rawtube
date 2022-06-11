@@ -3,25 +3,23 @@ const dataBase = require('../config/db');
 const ApiError = require('../errors/apiError');
 
 module.exports = {
-    async addVideo(form) {
+	async addVideo(form) {
 
-        const query = `SELECT * FROM add_video($1);`;
-        const value = [form];
-       
-        debug(value)
-        const data = (await dataBase.query(query, value)).rows[0];
-        debug(`> addUser()`);
-        if (!data) {
-          throw new ApiError('No data found for > addUser()', 400);
-        }
-        
-        return data;
-      },
-      
-      async getAllMyVideo(user_id) {
-        debug('getAllMyVideo');
+		const query = `SELECT * FROM add_video($1);`;
+		const value = [form];
 
-        const query = `SELECT 
+		const data = (await dataBase.query(query, value)).rows[0];
+		debug(`> addVideo()`);
+		if (!data) {
+			throw new ApiError('No data found for > addVideo()', 400);
+		}
+
+		return data;
+	},
+
+	async getAllMyVideo(user_id) {
+
+		const query = `SELECT 
         rawtube_video.id,
         rawtube_video.url_thumbnail,
         rawtube_video.duration,
@@ -35,21 +33,20 @@ module.exports = {
         FROM rawtube_video
         WHERE rawtube_video.user_id = $1`;
 
-        const values = [user_id]
+		const values = [user_id]
 
-        const data = (await dataBase.query(query,values)).rows;
-        debug(`> getAllMyVideo()`);
-        if (!data) {
-          throw new ApiError('No data found for > getAllMyVideo()', 400);
-        }
-        
-        return data;
-      },
+		const data = (await dataBase.query(query, values)).rows;
+		debug(`> getAllMyVideo()`);
+		if (!data) {
+			throw new ApiError('No data found for > getAllMyVideo()', 400);
+		}
 
-      async getForUptadeMyVideo(video_id,user_id) {
-        debug('getForUptadeMyVideo');
+		return data;
+	},
 
-        const query = `SELECT 
+	async getForUptadeMyVideo(video_id, user_id) {
+
+		const query = `SELECT 
         rawtube_video.id,
         rawtube_video.title,
         rawtube_video.url_thumbnail,
@@ -59,64 +56,63 @@ module.exports = {
         WHERE rawtube_video.id = $1
         AND rawtube_video.user_id = $2`;
 
-        const values = [video_id,user_id]
+		const values = [video_id, user_id]
 
-        const data = (await dataBase.query(query,values)).rows[0];
-        debug(`> getForUptadeMyVideo()`);
-        if (!data) {
-          throw new ApiError('No data found for > getForUptadeMyVideo()', 400);
-        }
-        
-        return data;
-      },
+		const data = (await dataBase.query(query, values)).rows[0];
+		debug(`> getForUptadeMyVideo()`);
+		if (!data) {
+			throw new ApiError('No data found for > getForUptadeMyVideo()', 400);
+		}
 
-      async uptadeMyVideo(form,videoId) {
-        debug('uptadeMyVideo');
-        debug('PUBLIC',Boolean(form.public))
-        let public = Boolean()
-        if(form.public == 'true'){
-          public = true;
-        }else{
-          public = false;
-        }
+		return data;
+	},
 
-      const query = `UPDATE rawtube_video
-      SET 
-      title = $1, 
-      description = $2, 
-      public = $3
-      WHERE rawtube_video.id = $4
-      RETURNING *`;
+	async uptadeMyVideo(form, videoId) {
 
-      const values = [form.title,form.description,public,videoId]
+		let public = Boolean()
+		if (form.public == 'true') {
+			public = true;
+		} else {
+			public = false;
+		}
 
-        const data = (await dataBase.query(query,values)).rows[0];
-        
-        debug(`> uptadeMyVideo()`);
-        if (!data) {
-          throw new ApiError('No data found for > uptadeMyVideo()', 400);
-        }
-        
-        return data;
-      },
+		const query = `UPDATE rawtube_video
+      	SET 
+      	title = $1, 
+      	description = $2, 
+      	public = $3
+      	WHERE rawtube_video.id = $4
+      	RETURNING *`;
+
+		const values = [form.title, form.description, public, videoId]
+		const data = (await dataBase.query(query, values)).rows[0];
+
+		debug(`> uptadeMyVideo()`);
+		if (!data) {
+			throw new ApiError('No data found for > uptadeMyVideo()', 400);
+		}
+
+		return data;
+	},
 
 
 
-      async deleteVideo(video_id,user_id) {
+	async deleteVideo(video_id, user_id) {
 
-        const query = `
+		const query = `
         DELETE FROM rawtube_video 
         WHERE id = $1 
         AND user_id = $2
         RETURNING *`;
 
-        const value = [video_id,user_id];
-        const data = (await dataBase.query(query, value)).rows[0];
-        debug(`> deleteUser()`);
-        if (!data) {
-          throw new ApiError('No data found for > deleteVideo()', 400);
-        }
-        
-        return data;
-      }
+		const value = [video_id, user_id];
+		const data = (await dataBase.query(query, value)).rows[0];
+		
+		debug(`> deleteUser()`);
+		if (!data) {
+			throw new ApiError('No data found for > deleteVideo()', 400);
+		}
+
+		return data;
+	}
 }

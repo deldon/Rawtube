@@ -4,64 +4,67 @@ const ApiError = require('../errors/apiError');
 
 module.exports = {
 
-    async addUser(form) {
+	async addUser(form) {
 
-        const query = `SELECT * FROM add_user($1);`;
-        const value = [form];
-    
-        const data = (await dataBase.query(query, value)).rows[0];
-        debug(`> addUser()`);
-        if (!data) {
-          throw new ApiError('No data found for > addUser()', 400);
-        }
-        
-        return data;
-      },
+		const query = `SELECT * FROM add_user($1);`;
+		const value = [form];
 
-      async updateUser(form,user_id) {
+		const data = (await dataBase.query(query, value)).rows[0];
 
-        const query = `SELECT * FROM update_user($1,$2);`;
-        const value = [form, user_id];
-        console.log(value)
-        const data = (await dataBase.query(query, value)).rows[0];
-        debug(`> updateUser()`);
-        if (!data) {
-          throw new ApiError('No data found for > updateUser()', 400);
-        }
-        
-        return data;
-      },
+		debug(`> addUser()`);
+		if (!data) {
+			throw new ApiError('No data found for > addUser()', 400);
+		}
 
-      async deleteUser(user_id) {
+		return data;
+	},
 
-        const query = `
+	async updateUser(form, user_id) {
+
+		const query = `SELECT * FROM update_user($1,$2);`;
+		const value = [form, user_id];
+
+		const data = (await dataBase.query(query, value)).rows[0];
+
+		debug(`> updateUser()`);
+		if (!data) {
+			throw new ApiError('No data found for > updateUser()', 400);
+		}
+
+		return data;
+	},
+
+	async deleteUser(user_id) {
+
+		const query = `
         DELETE FROM rawtube_user 
         WHERE id = $1 
         RETURNING id`;
 
-        const value = [user_id];
-        const data = (await dataBase.query(query, value)).rows[0];
-        debug(`> deleteUser()`);
-        if (!data) {
-          throw new ApiError('No data found for > deleteUser()', 400);
-        }
-        
-        return data;
-      },
+		const value = [user_id];
+		const data = (await dataBase.query(query, value)).rows[0];
 
-      async getUserByEmail(email) {
+		debug(`> deleteUser()`);
+		if (!data) {
+			throw new ApiError('No data found for > deleteUser()', 400);
+		}
 
-        const query = `SELECT * FROM "rawtube_user" WHERE email = $1`;
+		return data;
+	},
 
-        const value = [email];
-    
-        const data = (await dataBase.query(query, value)).rows[0];
-        debug(`> getUserByEmail()`);
-        if (!data) {
-          return false
-        }
-        
-        return data;
-      }
+	async getUserByEmail(email) {
+
+		const query = `SELECT * FROM "rawtube_user" WHERE email = $1`;
+
+		const value = [email];
+		const data = (await dataBase.query(query, value)).rows[0];
+
+		debug(`> getUserByEmail()`);
+		if (!data) {
+			return false
+		}
+
+		return data;
+	}
 
 }

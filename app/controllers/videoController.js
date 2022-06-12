@@ -1,4 +1,5 @@
 const debug = require('debug')('videoController');
+const favVideoDataMapper = require('../dataMapper/favVideoDataMapper');
 const videoDataMapper = require('../dataMapper/VideoDataMapper')
 
 module.exports = {
@@ -7,10 +8,20 @@ module.exports = {
 
         const data = await videoDataMapper.getVideoById(req.query.v);
 
+
+
         debug('getVideoById called');
         if (data) {
-            await videoDataMapper.addViewsByid(req.query.v,data.views+1)
-            res.render('pages/watch', { data, user:req.session.user })
+            await videoDataMapper.addViewsByid(req.query.v, data.views + 1)
+
+            if (req.session.user) {
+
+                const favExiste = await favVideoDataMapper.isExisteFavVideo(req.session.user.id, req.query.v)
+
+                res.render('pages/watch', { data, user: req.session.user, favExiste })
+            }
+
+            res.render('pages/watch', { data, user: req.session.user })
         } else {
             next();
         }
@@ -24,13 +35,13 @@ module.exports = {
         debug('getVideoByRelevance called');
         if (data) {
 
-            data.map((x)=>{
+            data.map((x) => {
                 const date = new Date(0);
                 date.setSeconds(x.duration); // specify value for SECONDS here
                 x.duration = date.toISOString().substr(11, 8);
             })
 
-            res.render('pages/index', { data, user:req.session.user });
+            res.render('pages/index', { data, user: req.session.user });
         } else {
             next();
         }

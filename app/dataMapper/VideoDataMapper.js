@@ -6,11 +6,13 @@ module.exports = {
 
 	async addViewsByid(id, newValue) {
 
+
 		const query = `UPDATE rawtube_video
     	SET views = $2
-    	WHERE id = $1`;
+    	WHERE id = $1
+		RETURNING *`;
 
-		const values = [id, newValue]
+		const values = [Number(id), newValue]
 		const data = (await dataBase.query(query, values)).rows[0];
 
 		debug(`> addViewsByid()`);
@@ -66,7 +68,7 @@ module.exports = {
         ORDER BY rawtube_video.release_date;`;
 
 		const data = (await dataBase.query(query)).rows;
-		
+
 		debug(`> getVideoByReleaseDate()`);
 		if (!data) {
 			throw new ApiError('No data found for > addUser()', 400);

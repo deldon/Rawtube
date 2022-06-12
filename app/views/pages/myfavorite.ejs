@@ -1,17 +1,14 @@
 <%- include('../partials/head'); %>
 <%- include('../partials/navbar',{user:user}); %>
 
-        <h1>Vos vidéo</h1>
+        <h1>Mes favories</h1>
 
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Video</th>
                     <th scope="col">Titre</th>
-                    <th scope="col">Visibilité</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Vues</th>
-                    <th scope="col">Commentaires</th>
+                    <th scope="col">duration</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -27,22 +24,12 @@
                             <%- datas.title %>
                         </td>
                         <td>
-                            <%- datas.public %>
+                            <%- datas.duration %>
                         </td>
                         <td>
-                            <%- datas.release_date %>
-                        </td>
                         <td>
-                            <%- datas.views %>
-                        </td>
-                        <td>
-                            <%- datas.commentaries %>
-                        </td>
-                        <td>
-                            <a href="/update/<%- datas.id %>">
-                                <img src="/icones/ic-twotone-mode-edit.svg" width="25px" alt="">
-                            </a>
-                            <a href="/delete/<%- datas.id %>" onclick="return confirm('Etes vous sûre de vouloir supprimer cette valeur ?');">
+                            
+                            <a href="/favoritedelete/<%- datas.id %>" onclick="return confirm('Etes vous sûre de vouloir supprimer cette valeur ?');">
                             <img src="/icones/MaterialSymbolsDeleteOutlineRounded.svg" width="25px" alt="">
                             </a>
                         </td>

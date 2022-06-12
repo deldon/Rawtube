@@ -10,6 +10,7 @@ const videoController = require('../controllers/videoController');
 const userController = require('../controllers/userController');
 
 const isAuthenticated = require('../middleware/security');
+const favVideoController = require('../controllers/favVideoController');
 
 
 // LOGIN
@@ -40,4 +41,9 @@ router.post('/user', controllerHandler(userController.addUser));
 router.patch('/user/:user_id', controllerHandler(userController.updateUser));
 router.delete('/user/:user_id', controllerHandler(userController.deleteUser));
 
+
+// FAVORI 
+router.get('/myfavorite', controllerHandler(favVideoController.getAllFavVideoByUser))
+router.get('/favorite/:id', controllerHandler(favVideoController.addFavVideo))
+router.get('/favoritedelete/:id', controllerHandler(favVideoController.deleteFavVideo))
 module.exports = router;

@@ -9,4 +9,14 @@
   <h4>Description</h2>
   <p><%- data.description %></p> 
 
+  <% if (locals.user) { %>
+    <% if (locals.favExiste) { %>
+
+    <a href="/favorite/<%= data.id %>"><img src="/icones/MaterialSymbolsFavoriteOutline.svg" alt=""></a>
+    <% } else {  %>
+      <a href="/favoritedelete/<%- data.id %>"><img src="/icones/MaterialSymbolsFavorite.svg" alt=""></a>
+      <% }  %>
+  <% }  %>
+ 
+  
 <%- include('../partials/footer'); %>

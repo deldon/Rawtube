@@ -1,5 +1,5 @@
 <%- include('../partials/head'); %>
-<%- include('../partials/navbar'); %>
+<%- include('../partials/navbar',{user:user}); %>
 <img src="/thumbnail/<%= data.url_thumbnail%>" width="300px">
 <form ref='uploadForm' 
 id='uploadForm' 

@@ -19,9 +19,11 @@ module.exports = {
                 const favExiste = await favVideoDataMapper.isExisteFavVideo(req.session.user.id, req.query.v)
 
                 res.render('pages/watch', { data, user: req.session.user, favExiste })
+            } else {
+                res.render('pages/watch', { data, user: req.session.user })
             }
 
-            res.render('pages/watch', { data, user: req.session.user })
+            
         } else {
             next();
         }

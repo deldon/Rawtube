@@ -74,12 +74,12 @@ module.exports = {
     login: async (req,res,next)=> {
 
         const user = await DataMapper.getUserByEmail(req.body.email)
-        debug(user);
+
         
         if(user){
         
         const validPwd = await bcrypt.compare(req.body.password, user.password);
-        debug(validPwd);
+
             if (!validPwd) {
                 return res.json({
                 error: "Ce n'est pas le bon mot de passe."

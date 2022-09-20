@@ -8,3 +8,6 @@ logs
 !/public/video/README.md
 /public/thumbnail/* 
 !/public/thumbnail/README.md
+
+/public/userThumbnail/* 
+!/public/userThumbnail/README.md

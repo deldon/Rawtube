@@ -18,9 +18,9 @@ module.exports = {
 
                 const favExiste = await favVideoDataMapper.isExisteFavVideo(req.session.user.id, req.query.v)
 
-                res.render('pages/watch', { data, user: req.session.user, favExiste })
+                res.json( { video:data, isFav:favExiste })
             } else {
-                res.render('pages/watch', { data, user: req.session.user })
+                res.json( { video:data, isFav:false })
             }
 
             

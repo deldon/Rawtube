@@ -2,6 +2,7 @@ const express = require('express');
 const router = require('./routers/router');
 const session = require('express-session');
 const expressJSDocSwagger = require('express-jsdoc-swagger');
+var cors = require('cors')
 
 const options = {
   info: {
@@ -44,6 +45,12 @@ expressJSDocSwagger(app)(options);
 
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
+
+const corsOptions = {
+  exposedHeaders: 'Authorization',
+};
+
+app.use(cors(corsOptions));
 
 app.set('view engine', 'ejs');
 app.set('views', './app/views');

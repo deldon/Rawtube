@@ -12,15 +12,20 @@ const userController = require('../controllers/userController');
 const isAuthenticated = require('../middleware/security');
 const favVideoController = require('../controllers/favVideoController');
 
-// ee
-// LOGIN
-router.get('/signin', controllerHandler(userController.signin));
+// -------- LOGIN -------- //
+/**
+ * POST /login/
+ * @summary This is the summary of the endpoint
+ * @tags LOGIN
+ * @return {object} 200 - success response
+ */
+
 router.post('/login', controllerHandler(userController.login));
 
 
 // VIDEO
 router.get('/', controllerHandler(videoController.getVideoByRelevance));
-router.get('/watch',controllerHandler(videoController.getVideoById));
+router.get('/watch', controllerHandler(videoController.getVideoById));
 
 // MY VIDEO
 router.get('/myvideo', isAuthenticated, controllerHandler(myVideoController.getAllMyVideo));
@@ -30,8 +35,8 @@ router.get('/delete/:id', isAuthenticated, controllerHandler(myVideoController.d
 router.post('/add_video', isAuthenticated, controllerHandler(myVideoController.addVideo));
 
 // UPLOAD
-router.get('/upload/', isAuthenticated , controllerHandler(uploadController.uploadTemplate));
-router.post('/upload', isAuthenticated , controllerHandler(uploadController.uploadVideo));
+router.get('/upload/', isAuthenticated, controllerHandler(uploadController.uploadTemplate));
+router.post('/upload', isAuthenticated, controllerHandler(uploadController.uploadVideo));
 
 //STREAM
 router.get('/video', controllerHandler(streamController.stream));

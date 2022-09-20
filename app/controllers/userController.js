@@ -1,9 +1,8 @@
 const debug = require('debug')('userController');
 const bcrypt = require('bcrypt');
 const DataMapper = require('../dataMapper/userDataMapper');
-
-// const jwt    = require('jsonwebtoken');
-// const SECRET_KEY = process.env.SECRET_KEY;
+const jwt    = require('jsonwebtoken');
+const SECRET_KEY = process.env.SECRET_KEY;
 // const url_avatar = process.env.URL_SERVER + 'avatar/';
 
 module.exports = {
@@ -12,7 +11,7 @@ module.exports = {
        
 
         if (req.body.new_password == req.body.confirm_new_password) {
-            debug(req.body)
+            
             const salt = await bcrypt.genSalt(10);
             const encryptedPassword = await bcrypt.hash(req.body.new_password, salt);
     
@@ -32,6 +31,7 @@ module.exports = {
             } else {
                 next();
             }
+            
         }
 
     },
@@ -69,9 +69,6 @@ module.exports = {
         }
     },
 
-    signin: (request, response) => {
-        response.render(`pages/signin`);
-    },
 
     login: async (req,res,next)=> {
 
@@ -87,17 +84,26 @@ module.exports = {
                 error: "Ce n'est pas le bon mot de passe."
                 });
             }
-            req.session.regenerate(function (err) {
-                if (err) next(err)
+            delete user.password;
 
-                // store user information in session, typically a user id
-                req.session.user = user
-                req.session.save(function (err) {
-                    if (err) return next(err)
-                    res.redirect('/')
-                  })
+            const expireIn = 24 * 60 * 60;
+            const token    = jwt.sign({
+                user: user
+            },
+            SECRET_KEY,
+            {
+                expiresIn: expireIn
+            });
+    
+            res.header('Authorization', 'Bearer ' + token);
+    
+            return res.status(200).json({
+                logged:true,
+                user
+            });
 
-            })         
+
+        
         } else {
             return res.json({
                 error: "Ce n'est pas le bon email."

@@ -43,7 +43,7 @@ module.exports = {
                 x.duration = date.toISOString().substr(11, 8);
             })
 
-            res.render('pages/index', { data, user: req.session.user });
+            res.json(data);
         } else {
             next();
         }

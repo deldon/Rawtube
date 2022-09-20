@@ -12,7 +12,7 @@ const userController = require('../controllers/userController');
 const isAuthenticated = require('../middleware/security');
 const favVideoController = require('../controllers/favVideoController');
 
-
+// ee
 // LOGIN
 router.get('/signin', controllerHandler(userController.signin));
 router.post('/login', controllerHandler(userController.login));

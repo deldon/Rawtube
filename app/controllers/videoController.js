@@ -4,6 +4,36 @@ const videoDataMapper = require('../dataMapper/VideoDataMapper')
 
 module.exports = {
 
+    getAllVideoByRelevance: async (req,res) => {
+
+        const position = Number(req.params.position);
+        if (position > 0 && Number.isInteger(position)) {
+
+        const data = await videoDataMapper.getAllVideoByRelevance(position);
+
+        if (data) {
+            res.json(data)
+        }
+        else{
+            debug('the position and greater than the number of videos')
+            
+            res.status(404).json({error:'the position and greater than the number of videos'})
+        }
+
+        }
+        else{
+            debug('the parameter must be a positive integer')
+            res.status(404).json({error:'the parameter must be a positive integer'})
+        }
+
+        
+
+
+    },
+
+
+    // a supr
+
     getVideoById: async (req, res) => {
 
         const data = await videoDataMapper.getVideoById(req.query.v);

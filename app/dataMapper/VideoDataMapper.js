@@ -4,25 +4,41 @@ const ApiError = require('../errors/apiError');
 
 module.exports = {
 
-	async addViewsByid(id, newValue) {
+	async getAllVideoByRelevance(position){
 
+		const query = 
+		`select 
+		rawtube_video.id as video_id,
+		rawtube_video.url_file as url_file, 
+		rawtube_user.id as user_id,
+		rawtube_user.name as user_name,
+		rawtube_user.url_thumbnail as user_url_thumbnail,
+			(select count(*) from rawtube_user_has_like
+				where video_id = rawtube_video.id) as likes,
+			(select count(*) from rawtube_commentaries
+				where video_id = rawtube_video.id) as number_of_comments
+		from rawtube_video
+		join rawtube_user on rawtube_user.id = rawtube_video.user_id
+		where rawtube_video.is_encoded = true
+		order by rawtube_video.created_at desc
+		offset $1 - 1
+		limit 1;`
 
-		const query = `UPDATE rawtube_video
-    	SET views = $2
-    	WHERE id = $1
-		RETURNING *`;
+		const values = [position];
 
-		const values = [Number(id), newValue]
 		const data = (await dataBase.query(query, values)).rows[0];
 
-		debug(`> addViewsByid()`);
+		debug(`> getAllVideoByRelevance`);
 		if (!data) {
-			throw new ApiError('No data found for > addViewsByid()', 400);
+			//throw new ApiError('No data found for > getAllVideoByRelevance', 400);
+			return false
 		}
 
 		return data;
+
 	},
 
+/// a supr
 
 	async getVideoById(id) {
 
@@ -72,6 +88,25 @@ module.exports = {
 		debug(`> getVideoByReleaseDate()`);
 		if (!data) {
 			throw new ApiError('No data found for > addUser()', 400);
+		}
+
+		return data;
+	},
+
+	async addViewsByid(id, newValue) {
+
+
+		const query = `UPDATE rawtube_video
+    	SET views = $2
+    	WHERE id = $1
+		RETURNING *`;
+
+		const values = [Number(id), newValue]
+		const data = (await dataBase.query(query, values)).rows[0];
+
+		debug(`> addViewsByid()`);
+		if (!data) {
+			throw new ApiError('No data found for > addViewsByid()', 400);
 		}
 
 		return data;

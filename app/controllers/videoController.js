@@ -6,6 +6,7 @@ const videoDataMapper = require('../dataMapper/VideoDataMapper')
 module.exports = {
 
     getAllVideoByRelevance: async (req, res) => {
+        debug('> getAllVideoByRelevance')
 
         const position = Number(req.params.position);
         if (position > 0 && Number.isInteger(position)) {
@@ -28,6 +29,7 @@ module.exports = {
     },
 
     getAllVideoByUserById: async (req, res) => {
+        debug('> getAllVideoByUserById')
 
         const position = Number(req.params.position);
         const userId = Number(req.params.userId)
@@ -59,7 +61,33 @@ module.exports = {
             res.status(404).json({ error: 'The user does not exist' })
         }
 
+    },
+
+    getAllVideoByUserId: async(req,res) => {
+        debug('> getAllVideoByUserId')
+        const userId = Number(req.params.userId)
+
+        const user = await userDataMapper.getUserInfoById(userId);
+        const videos = await videoDataMapper.getAllVideoByUserId(userId);
+
+        res.json({user,videos})
+
+    },
+
+    deleteVideoById: async (req,res) => {
+        debug('> deleteVideoById')
+
+        const user = 1;
+        //--------------------------------------------------- check if the video is deleted by its owner
+
+        const videoId = Number(req.params.videoId)
+        debug(req.params.videoId)
+        const response = await videoDataMapper.deleteVideoById(videoId);
+
+                res.json(response)
     }
+
+
 
 
 }

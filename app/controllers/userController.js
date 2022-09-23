@@ -6,8 +6,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 // const url_avatar = process.env.URL_SERVER + 'avatar/';
 
 module.exports = {
-
-
+    
     addUser: async (req, res, next) => {
        
 

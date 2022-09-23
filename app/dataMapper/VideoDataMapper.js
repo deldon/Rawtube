@@ -4,10 +4,10 @@ const ApiError = require('../errors/apiError');
 
 module.exports = {
 
-	async getAllVideoByRelevance(position){
+	async getAllVideoByRelevance(position) {
 
-		const query = 
-		`select 
+		const query =
+			`select 
 		rawtube_video.id as video_id,
 		rawtube_video.url_file as url_file, 
 		rawtube_user.id as user_id,
@@ -37,10 +37,10 @@ module.exports = {
 
 	},
 
-	async getAllVideoByUserById(position,userId){
+	async getAllVideoByUserById(position, userId) {
 
-		const query = 
-		`select 
+		const query =
+			`select 
 		rawtube_video.id as video_id,
 		rawtube_video.url_file as url_file, 
 		rawtube_user.id as user_id,
@@ -57,7 +57,7 @@ module.exports = {
 		offset $2 - 1                                  -- 5 is param position
 		limit 1;`
 
-		const values = [userId,position];
+		const values = [userId, position];
 
 		const data = (await dataBase.query(query, values)).rows[0];
 
@@ -71,7 +71,50 @@ module.exports = {
 	},
 
 
-/// a supr
+
+	async getAllVideoByUserId(userId) {
+
+		const query = `
+		select 
+		id,
+		url_thumbnail,
+		"views",
+		ROW_NUMBER() OVER(ORDER BY created_at desc) AS POSITION
+		from rawtube_video 
+		where user_id = $1                                     -- user id
+		order by rawtube_video.created_at desc;`
+
+		const values = [userId]
+		const data = (await dataBase.query(query, values)).rows;
+
+		debug(`> getAllVideoByUserId()`);
+		if (!data) {
+			throw new ApiError('No data found for > getAllVideoByUserId()', 400);
+		}
+
+		return data;
+
+	},
+
+	async deleteVideoById(videoId) {
+		const query = `
+		delete from rawtube_video 
+		where id = $1
+		returning *
+		`
+
+		const values = [videoId];
+		const data = (await dataBase.query(query,values)).rows[0];
+
+		debug(`> deleteVideoById()`);
+		if (!data) {
+			throw new ApiError('No data found for > deleteVideoById()', 400);
+		}
+
+		return data;
+	},
+
+	/// a supr
 
 	async getVideoById(id) {
 

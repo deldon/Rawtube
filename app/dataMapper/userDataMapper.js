@@ -4,6 +4,33 @@ const ApiError = require('../errors/apiError');
 
 module.exports = {
 
+	async getUserInfoById(userId) { // new
+
+		const query = `
+		select
+		rawtube_user.id,
+		rawtube_user.name,
+		rawtube_user.url_thumbnail,
+			(select count(*) from rawtube_video
+			where user_id = rawtube_user.id) as total_videos,
+			(select count(*)
+			from rawtube_user_has_like
+		where user_id = rawtube_user.id) as total_likes
+		from rawtube_user
+		where id = $1;`
+
+		const values = [userId]
+		const data = (await dataBase.query(query, values)).rows[0];
+
+		debug(`> getUserInfoById()`);
+		if (!data) {
+			throw new ApiError('No data found for > getUserInfoById()', 400);
+		}
+
+		return data;
+
+	},
+
 	async addUser(form) {
 
 		const query = `SELECT * FROM add_user($1);`;

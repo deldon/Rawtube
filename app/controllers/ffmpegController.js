@@ -14,10 +14,10 @@ const ffmpeg = {
     encoder: async (videoSrcPath, videoId) => {
 
         try {
-            debug('encoder called')
+            debug('encoder start')
             const bl = await spawn2('ffmpeg', ['-i', './public/videoTemp/' + videoSrcPath, '-b:v', '491k', '-b:a', '96k', '-r', '25', '-vf', 'scale=-1:720', './public/video/' + videoId + '.webm']);
             console.log(bl.toString());
-            debug('video ' + videoSrcPath + 'encoded');
+            debug('video ' + videoSrcPath + ' encoded');
             await ffmpeg.videoDelete(videoSrcPath);
             
         } catch (e) {
@@ -32,6 +32,7 @@ const ffmpeg = {
      * @param {Number} duration Video length
      */
     thumbnail: async (fileName, videoId, duration) => {
+        debug('thumbnail Start')
 
         try {
             const divi = Math.floor(duration / 3)
@@ -42,9 +43,9 @@ const ffmpeg = {
 
             debug('thumbnail called at :' + timeString)
             const bl = await spawn2('ffmpeg', ['-i', './public/videoTemp/' + fileName, '-ss', timeString, '-vframes', '1', './public/thumbnail/' + videoId + '.jpg']);
-            console.log(bl.toString());
+           // debug(bl.toString());
         } catch (e) {
-            console.log(e.stderr.toString())
+            //debug(e.stderr)
         }
     },
 
@@ -53,12 +54,13 @@ const ffmpeg = {
      * @returns {Number} Video length in second
      */
     videoDuration: async (fileName) => {
+        debug('video duration Start')
 
         try {
-            debug('Duration called')
+            
             const bl = await spawn2('ffprobe', ['-i', './public/videoTemp/' + fileName, '-v', 'quiet', '-show_entries', 'format=duration', '-hide_banner', '-of', 'default=noprint_wrappers=1:nokey=1', '-sexagesimal']);
 
-            const duration = bl.toString().split('.')[0];
+             const duration = bl.toString().split('.')[0];
 
             const temp = {
                 hours: Number(duration.split(':')[0]),
@@ -67,9 +69,9 @@ const ffmpeg = {
             }
 
             temp.total = (temp.hours * 3600) + (temp.minutes * 60) + temp.seconds
-
-
-            return temp.total;
+            debug('Duration end ' + temp.total + 's')
+        
+           return temp.total;
         } catch (e) {
             console.log(e.stderr.toString())
         }

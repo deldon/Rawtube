@@ -40,8 +40,7 @@ router.get('/delete/:id', isAuthenticated, controllerHandler(myVideoController.d
 router.post('/add_video', isAuthenticated, controllerHandler(myVideoController.addVideo));
 
 // UPLOAD
-router.get('/upload/', isAuthenticated, controllerHandler(uploadController.uploadTemplate)); 
-router.post('/upload', isAuthenticated, controllerHandler(uploadController.uploadVideo));
+router.post('/upload', controllerHandler(uploadController.uploadVideo));
 
 //STREAM
 router.get('/video', controllerHandler(streamController.stream));

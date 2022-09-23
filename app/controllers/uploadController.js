@@ -4,13 +4,9 @@ const ffmpeg = require('./ffmpegController');
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
-    uploadTemplate: (req,res,next) => {
-        debug('uploadTemplate');
-        res.render('pages/upload', { user:req.session.user })
-    },
 
     uploadVideo: async (req, res, next) => {
-        debug('videoUpload');
+        debug('VideoUpload Satart');
         let sampleFile;
         let uploadPath;
 
@@ -22,6 +18,8 @@ module.exports = {
         uploadPath = './public/videoTemp/' + sampleFile.name;
 
         sampleFile.mv(uploadPath, async (err) => {
+
+            debug('video uploded')
             if (err) {
                 return res.status(500).json(err);
             }
@@ -29,6 +27,7 @@ module.exports = {
             const videoId = uuidv4();
 
             const duration = await ffmpeg.videoDuration(sampleFile.name);
+
             await ffmpeg.thumbnail(sampleFile.name, videoId,duration);
             ffmpeg.encoder(sampleFile.name, videoId);
 
@@ -39,18 +38,18 @@ module.exports = {
                 url_file: videoId + '.webm',
                 url_thumbnail: videoId + '.jpg',
                 duration: duration,
-                user_id:req.session.user.id
+                user_id:1
             }
             
-            const newVideo = await myVideoDataMapper.addVideo(form);
+            //const newVideo = await myVideoDataMapper.addVideo(form);
             
-            if (newVideo) {
-                debug(`> addVideo()`);
+            // if (newVideo) {
+            //     debug(`> addVideo()`);
                 
-                res.redirect('/update/' + newVideo.id)
-            } else {
-                next();
-            }
+            //     res.redirect('/update/' + newVideo.id)
+            // } else {
+            //     next();
+            // }
 
         });
     }

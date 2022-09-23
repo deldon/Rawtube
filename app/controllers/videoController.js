@@ -1,7 +1,7 @@
 const debug = require('debug')('videoController');
-const favVideoDataMapper = require('../dataMapper/favVideoDataMapper');
 const userDataMapper = require('../dataMapper/userDataMapper');
 const videoDataMapper = require('../dataMapper/VideoDataMapper')
+const fs = require('fs');
 
 module.exports = {
 
@@ -14,6 +14,9 @@ module.exports = {
             const data = await videoDataMapper.getAllVideoByRelevance(position);
 
             if (data) {
+
+                await videoDataMapper.incrementViews(data.video_id)
+
                 res.json(data)
             } else {
                 debug('the position and greater than the number of videos')
@@ -44,6 +47,7 @@ module.exports = {
                 const data = await videoDataMapper.getAllVideoByUserById(position, userId)
 
                 if (data) {
+                    await videoDataMapper.incrementViews(data.video_id)
                     res.json(data)
                 } else {
                     debug('the position and greater than the number of videos')
@@ -74,18 +78,42 @@ module.exports = {
 
     },
 
-    deleteVideoById: async (req,res) => {
-        debug('> deleteVideoById')
 
-        const user = 1;
-        //--------------------------------------------------- check if the video is deleted by its owner
+    deleteVideoById: async (req, res, next) => {
 
-        const videoId = Number(req.params.videoId)
-        debug(req.params.videoId)
-        const response = await videoDataMapper.deleteVideoById(videoId);
+        const videoId = req.params.videoId;
+        const user_id = 1
 
-                res.json(response)
-    }
+        const videoDelete = await videoDataMapper.deleteVideoById(videoId, user_id);
+
+        debug('deleteVideo called');
+        if (videoDelete) {
+
+            debug(`> deleteVideo()`);
+
+            fs.unlink('./public/thumbnail/' + videoDelete.url_thumbnail, (err => {
+                if (err) debug(err);
+                else {
+                    debug("\nDeleted thumbnail: " + videoDelete.url_thumbnail);
+
+                }
+            }));
+
+            fs.unlink('./public/video/' + videoDelete.url_file, (err => {
+                if (err) debug(err);
+                else {
+                    debug("\nDeleted video: " + videoDelete.url_file);
+
+                }
+            }));
+
+
+            res.json(videoDelete)
+        } else {
+            next();
+        }
+
+    },
 
 
 

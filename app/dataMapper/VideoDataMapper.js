@@ -114,6 +114,25 @@ module.exports = {
 		return data;
 	},
 
+	async incrementViews(videoId) {
+		const query = `
+		update rawtube_video 
+		set views = (select "views" from rawtube_video where id = $1) + 1
+		where id = $1
+		returning *
+		`
+
+		const values = [videoId];
+		const data = (await dataBase.query(query,values)).rows[0];
+
+		debug(`> incrementViews()`);
+		if (!data) {
+			throw new ApiError('No data found for > incrementViews()', 400);
+		}
+
+		return data;
+	},
+
 	/// a supr
 
 	async getVideoById(id) {

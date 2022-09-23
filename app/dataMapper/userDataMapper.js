@@ -1,4 +1,4 @@
-const debug = require('debug')('userDataMapper');
+const debug = require('debug')('userDataMapper-');
 const dataBase = require('../config/db');
 const ApiError = require('../errors/apiError');
 

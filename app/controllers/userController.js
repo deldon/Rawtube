@@ -7,6 +7,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 module.exports = {
 
+
     addUser: async (req, res, next) => {
        
 

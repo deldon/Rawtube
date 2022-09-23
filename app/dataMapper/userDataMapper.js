@@ -65,6 +65,25 @@ module.exports = {
 		}
 
 		return data;
-	}
+	},
+
+	async userIsExist(userId){ // new
+
+		const query = `
+			select id
+			from rawtube_user 
+			where id = $1`
+
+		const values = [userId]
+
+		const data = (await dataBase.query(query,values)).rows[0]
+
+		if (!data) {
+			return false
+		}else{
+			return true
+		}
+
+	},
 
 }

@@ -24,7 +24,9 @@ router.post('/login', controllerHandler(userController.login));
 
 
 // VIDEO
-router.get('/video/:position/', controllerHandler(videoController.getAllVideoByRelevance))
+router.get('/video/:position/', controllerHandler(videoController.getAllVideoByRelevance)); //new
+router.get('/video/:position/:userId', controllerHandler(videoController.getAllVideoByUserById)); //new
+
 
 // MY VIDEO
 router.get('/myvideo', isAuthenticated, controllerHandler(myVideoController.getAllMyVideo));

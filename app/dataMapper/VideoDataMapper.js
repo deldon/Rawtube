@@ -30,13 +30,46 @@ module.exports = {
 
 		debug(`> getAllVideoByRelevance`);
 		if (!data) {
-			//throw new ApiError('No data found for > getAllVideoByRelevance', 400);
 			return false
 		}
 
 		return data;
 
 	},
+
+	async getAllVideoByUserById(position,userId){
+
+		const query = 
+		`select 
+		rawtube_video.id as video_id,
+		rawtube_video.url_file as url_file, 
+		rawtube_user.id as user_id,
+		rawtube_user.name as user_name,
+		rawtube_user.url_thumbnail as user_url_thumbnail,
+			(select count(*) from rawtube_user_has_like
+				where video_id = rawtube_video.id) as likes,
+			(select count(*) from rawtube_commentaries
+				where video_id = rawtube_video.id) as number_of_comments
+		from rawtube_video
+		join rawtube_user on rawtube_user.id = rawtube_video.user_id
+		where rawtube_user.id = $1                     -- 1 is param user id
+		order by rawtube_video.created_at desc
+		offset $2 - 1                                  -- 5 is param position
+		limit 1;`
+
+		const values = [userId,position];
+
+		const data = (await dataBase.query(query, values)).rows[0];
+
+		debug(`> getAllVideoByUserById`);
+		if (!data) {
+			return false
+		}
+
+		return data;
+
+	},
+
 
 /// a supr
 

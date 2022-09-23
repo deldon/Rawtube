@@ -1,84 +1,65 @@
 const debug = require('debug')('videoController');
 const favVideoDataMapper = require('../dataMapper/favVideoDataMapper');
+const userDataMapper = require('../dataMapper/userDataMapper');
 const videoDataMapper = require('../dataMapper/VideoDataMapper')
 
 module.exports = {
 
-    getAllVideoByRelevance: async (req,res) => {
+    getAllVideoByRelevance: async (req, res) => {
 
         const position = Number(req.params.position);
         if (position > 0 && Number.isInteger(position)) {
 
-        const data = await videoDataMapper.getAllVideoByRelevance(position);
+            const data = await videoDataMapper.getAllVideoByRelevance(position);
 
-        if (data) {
-            res.json(data)
-        }
-        else{
-            debug('the position and greater than the number of videos')
-            
-            res.status(404).json({error:'the position and greater than the number of videos'})
-        }
-
-        }
-        else{
-            debug('the parameter must be a positive integer')
-            res.status(404).json({error:'the parameter must be a positive integer'})
-        }
-
-        
-
-
-    },
-
-
-    // a supr
-
-    getVideoById: async (req, res) => {
-
-        const data = await videoDataMapper.getVideoById(req.query.v);
-
-
-
-        debug('getVideoById called');
-        if (data) {
-            await videoDataMapper.addViewsByid(req.query.v, data.views + 1)
-
-            if (req.session.user) {
-
-                const favExiste = await favVideoDataMapper.isExisteFavVideo(req.session.user.id, req.query.v)
-
-                res.json( { video:data, isFav:favExiste })
+            if (data) {
+                res.json(data)
             } else {
-                res.json( { video:data, isFav:false })
+                debug('the position and greater than the number of videos')
+
+                res.status(404).json({ error: 'the position and greater than the number of videos' })
             }
 
-            
         } else {
-            next();
+            debug('the parameter must be a positive integer')
+            res.status(404).json({ error: 'the parameter must be a positive integer' })
         }
 
     },
 
-    getVideoByRelevance: async (req, res) => {
+    getAllVideoByUserById: async (req, res) => {
 
-        const data = await videoDataMapper.getVideoByReleaseDate();
+        const position = Number(req.params.position);
+        const userId = Number(req.params.userId)
 
-        debug('getVideoByRelevance called');
-        if (data) {
+        const userIsExiste = await userDataMapper.userIsExist(userId)
 
-            data.map((x) => {
-                const date = new Date(0);
-                date.setSeconds(x.duration); // specify value for SECONDS here
-                x.duration = date.toISOString().substr(11, 8);
-            })
+        if (userIsExiste) {
 
-            res.json(data);
+
+            if (position > 0 && Number.isInteger(position)) {
+
+                const data = await videoDataMapper.getAllVideoByUserById(position, userId)
+
+                if (data) {
+                    res.json(data)
+                } else {
+                    debug('the position and greater than the number of videos')
+
+                    res.status(404).json({ error: 'the position is greater than the number of videos or the user does not exist' })
+                }
+
+            } else {
+                debug('the parameter must be a positive integer')
+                res.status(404).json({ error: 'the parameter must be a positive integer' })
+            }
+
         } else {
-            next();
+            debug('The user does not exist')
+            res.status(404).json({ error: 'The user does not exist' })
         }
 
+    }
 
-    },
 
 }

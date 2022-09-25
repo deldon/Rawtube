@@ -96,6 +96,22 @@ module.exports = {
 
 	},
 
+	async addVideo(obj) {
+
+		const query = `SELECT * FROM add_video($1);`;
+		const value = [obj];
+
+		const data = (await dataBase.query(query, value)).rows[0];
+		debug(`> addVideo()`);
+		if (!data) {
+			throw new ApiError('No data found for > addVideo()', 400);
+		}
+
+		return data;
+	},
+
+
+
 	async deleteVideoById(videoId) {
 		const query = `
 		delete from rawtube_video 
@@ -109,6 +125,24 @@ module.exports = {
 		debug(`> deleteVideoById()`);
 		if (!data) {
 			throw new ApiError('No data found for > deleteVideoById()', 400);
+		}
+
+		return data;
+	},
+
+	async videoIsEncoded(video_id) {
+
+
+		const query = `UPDATE rawtube_video 
+		SET is_encoded  = true
+		WHERE url_file = $1`;
+		const value = [video_id + '.webm'];
+
+		const data = (await dataBase.query(query, value)).rows[0];
+
+		debug(`> videoIsEncoded`);
+		if (!data) {
+			throw new ApiError('No data found for > videoIsEncoded()', 400);
 		}
 
 		return data;

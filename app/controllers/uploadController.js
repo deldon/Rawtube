@@ -2,6 +2,7 @@ const debug = require('debug')('uploadController');
 const myVideoDataMapper = require ('../dataMapper/myVideoDataMapper');
 const ffmpeg = require('./ffmpegController');
 const { v4: uuidv4 } = require('uuid');
+const VideoDataMapper = require('../dataMapper/VideoDataMapper');
 
 module.exports = {
 
@@ -32,24 +33,25 @@ module.exports = {
             ffmpeg.encoder(sampleFile.name, videoId);
 
             const form = {
-                title: sampleFile.name.split('.')[0],
-                description: '',
-                public: false,
                 url_file: videoId + '.webm',
+                is_encoded:false,
                 url_thumbnail: videoId + '.jpg',
                 duration: duration,
                 user_id:1
             }
             
-            //const newVideo = await myVideoDataMapper.addVideo(form);
+            const newVideo = await VideoDataMapper.addVideo(form)
+
             
-            // if (newVideo) {
-            //     debug(`> addVideo()`);
+    
+            
+            if (newVideo) {
+                debug(`> addVideo()`);
                 
-            //     res.redirect('/update/' + newVideo.id)
-            // } else {
-            //     next();
-            // }
+                res.json(newVideo)
+            } else {
+                next();
+            }
 
         });
     }

@@ -2,6 +2,7 @@ const debug = require('debug')('ffmpegController');
 const { spawn } = require('child_process');
 const spawn2 = require('await-spawn')
 const fs = require('fs');
+const VideoDataMapper = require('../dataMapper/VideoDataMapper');
 
 
 const ffmpeg = {
@@ -16,12 +17,13 @@ const ffmpeg = {
         try {
             debug('encoder start')
             const bl = await spawn2('ffmpeg', ['-i', './public/videoTemp/' + videoSrcPath, '-b:v', '491k', '-b:a', '96k', '-r', '25', '-vf', 'scale=-1:720', './public/video/' + videoId + '.webm']);
-            console.log(bl.toString());
+           // console.log(bl.toString());
             debug('video ' + videoSrcPath + ' encoded');
+            await VideoDataMapper.videoIsEncoded(videoId);
             await ffmpeg.videoDelete(videoSrcPath);
             
         } catch (e) {
-            console.log(e.stderr.toString())
+            //console.log(e.stderr.toString())
         }
 
     },

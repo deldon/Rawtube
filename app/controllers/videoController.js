@@ -8,14 +8,29 @@ module.exports = {
     getAllVideoByRelevance: async (req, res) => {
         debug('> getAllVideoByRelevance')
 
+        const userId = 1
+
         const position = Number(req.params.position);
         if (position > 0 && Number.isInteger(position)) {
 
             const data = await videoDataMapper.getAllVideoByRelevance(position);
 
+            data.url_file = process.env.URL_SERVER + 'video?v=' + data.url_file
+            data.user_url_thumbnail = process.env.URL_SERVER + 'userThumbnail/' + data.user_url_thumbnail
+
+            data.user_is_liked = false
+
+            if (userId) { // IF TOKEN
+                const userIsLiked = await videoDataMapper.videoIsLiked(userId, data.video_id)
+                debug(userIsLiked)
+                data.user_is_liked = userIsLiked
+            }
+
+
             if (data) {
 
                 await videoDataMapper.incrementViews(data.video_id)
+
 
                 res.json(data)
             } else {
@@ -45,7 +60,18 @@ module.exports = {
             if (position > 0 && Number.isInteger(position)) {
 
                 const data = await videoDataMapper.getAllVideoByUserById(position, userId)
+                data.url_file = process.env.URL_SERVER + 'video/?v=' + data.url_file
+                data.user_url_thumbnail = process.env.URL_SERVER + 'userThumbnail/' + data.user_url_thumbnail
 
+                data.user_is_liked = false
+
+                if (userId) { // IF TOKEN
+                    const userIsLiked = await videoDataMapper.videoIsLiked(userId, data.video_id)
+                    debug(userIsLiked)
+                    data.userIsLiked = userIsLiked
+                }
+
+                
                 if (data) {
                     await videoDataMapper.incrementViews(data.video_id)
                     res.json(data)
@@ -67,14 +93,22 @@ module.exports = {
 
     },
 
-    getAllVideoByUserId: async(req,res) => {
+    getAllVideoByUserId: async (req, res) => {
         debug('> getAllVideoByUserId')
         const userId = Number(req.params.userId)
 
         const user = await userDataMapper.getUserInfoById(userId);
+        user.url_thumbnail = process.env.URL_SERVER + 'userThumbnail/' + user.url_thumbnail
         const videos = await videoDataMapper.getAllVideoByUserId(userId);
 
-        res.json({user,videos})
+        videos.map((e) => {
+
+            e.url_thumbnail = process.env.URL_SERVER + '/thumbnail/' + e.url_thumbnail
+        })
+
+
+
+        res.json({ user, videos })
 
     },
 

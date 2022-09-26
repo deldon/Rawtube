@@ -167,6 +167,25 @@ module.exports = {
 		return data;
 	},
 
+	async videoIsLiked(userId,videoId) {
+		debug(userId,videoId)
+		const query = `
+		select *
+		from rawtube_user_has_like
+		where user_id = $1 and video_id = $2
+		`
+
+		const values = [userId,videoId];
+		const data = (await dataBase.query(query,values)).rows[0];
+
+		debug(`> videoIsLiked()`);
+		if (!data) {
+			return false
+		}
+
+		return true;
+	},
+
 	/// a supr
 
 	async getVideoById(id) {

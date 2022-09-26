@@ -11,3 +11,4 @@ logs
 
 /public/userThumbnail/* 
 !/public/userThumbnail/README.md
+!/public/userThumbnail/user.jpg

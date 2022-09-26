@@ -36,7 +36,7 @@ module.exports = {
                 is_encoded:false,
                 url_thumbnail: videoId + '.jpg',
                 duration: duration,
-                user_id:2
+                user_id:req.decoded.user.id
             }
             
             const newVideo = await VideoDataMapper.addVideo(form)

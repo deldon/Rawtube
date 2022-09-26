@@ -19,7 +19,7 @@ module.exports = {
                     name: req.body.user_name,
                     email: req.body.email,
                     password: encryptedPassword,
-                    url_thumbnail:'kjkj.jpeg'
+                    url_thumbnail:'user.jpg'
                 }
      
             const newUser = await DataMapper.addUser(form);

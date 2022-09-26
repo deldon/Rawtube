@@ -8,7 +8,6 @@ module.exports = {
     getAllVideoByRelevance: async (req, res) => {
         debug('> getAllVideoByRelevance')
 
-        const userId = 1
 
         const position = Number(req.params.position);
         if (position > 0 && Number.isInteger(position)) {
@@ -20,8 +19,9 @@ module.exports = {
 
             data.user_is_liked = false
 
-            if (userId) { // IF TOKEN
-                const userIsLiked = await videoDataMapper.videoIsLiked(userId, data.video_id)
+            if (req.decoded) { // IF TOKEN
+                debug('TOKEN for user ',req.decoded.user.id)
+                const userIsLiked = await videoDataMapper.videoIsLiked(Number(req.decoded.user.id), data.video_id)
                 debug(userIsLiked)
                 data.user_is_liked = userIsLiked
             }
@@ -65,10 +65,11 @@ module.exports = {
 
                 data.user_is_liked = false
 
-                if (userId) { // IF TOKEN
-                    const userIsLiked = await videoDataMapper.videoIsLiked(userId, data.video_id)
+                if (req.decoded) { // IF TOKEN
+                    debug('TOKEN for user ',req.decoded.user.id)
+                    const userIsLiked = await videoDataMapper.videoIsLiked(Number(req.decoded.user.id), data.video_id)
                     debug(userIsLiked)
-                    data.userIsLiked = userIsLiked
+                    data.user_is_liked = userIsLiked
                 }
 
                 
@@ -116,7 +117,7 @@ module.exports = {
     deleteVideoById: async (req, res, next) => {
 
         const videoId = req.params.videoId;
-        const user_id = 1
+        const user_id = req.decoded.user.id
 
         const videoDelete = await videoDataMapper.deleteVideoById(videoId, user_id);
 
@@ -144,7 +145,7 @@ module.exports = {
 
             res.json(videoDelete)
         } else {
-            next();
+            res.status(400)
         }
 
     },

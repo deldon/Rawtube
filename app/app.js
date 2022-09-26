@@ -7,7 +7,7 @@ var cors = require('cors')
 const options = {
   info: {
     version: '1.0.0',
-    title: 'Albums store',
+    title: 'RawTube',
     license: {
       name: 'MIT',
     },
@@ -57,16 +57,16 @@ app.set('views', './app/views');
 
 app.use(express.static('./public'));
 
-app.use(session({
-    secret: 'process.env.SECRET_KEY',
-    resave: false,
-    saveUninitialized: true,
+// app.use(session({
+//     secret: 'process.env.SECRET_KEY',
+//     resave: false,
+//     saveUninitialized: true,
 
-    // cookie: { 
-    //     secure: false,  // if true only transmit cookie over https
-    //     httpOnly: true // prevents client side JS from reading the cookie
-    // }
-}));
+//     // cookie: { 
+//     //     secure: false,  // if true only transmit cookie over https
+//     //     httpOnly: true // prevents client side JS from reading the cookie
+//     // }
+// }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

@@ -8,7 +8,7 @@ const streamController = require('../controllers/streamController');
 const videoController = require('../controllers/videoController');
 const userController = require('../controllers/userController');
 
-const isAuthenticated = require('../middleware/security');
+const security = require('../middleware/security');
 
 // -------- LOGIN -------- //
 /**
@@ -18,14 +18,16 @@ const isAuthenticated = require('../middleware/security');
  * @return {object} 200 - success response
  */
 
-
+router.get('/opop/',security.pass,(req,res)=>{
+    res.json(req.decoded)
+})
 
 
 // VIDEO
-router.get('/video/:position/', controllerHandler(videoController.getAllVideoByRelevance)); //new
-router.get('/video/:position/:userId', controllerHandler(videoController.getAllVideoByUserById)); //new
+router.get('/video/:position/',security.pass, controllerHandler(videoController.getAllVideoByRelevance)); //new
+router.get('/video/:position/:userId',security.pass, controllerHandler(videoController.getAllVideoByUserById)); //new
 
-router.delete('/video/:videoId', controllerHandler(videoController.deleteVideoById)) //new
+router.delete('/video/:videoId',security.check, controllerHandler(videoController.deleteVideoById)) //new
 
 // CHANNEL
 router.get('/channel/:userId',controllerHandler(videoController.getAllVideoByUserId)) //new
@@ -33,7 +35,7 @@ router.get('/channel/:userId',controllerHandler(videoController.getAllVideoByUse
 
 
 // UPLOAD
-router.post('/upload', controllerHandler(uploadController.uploadVideo));
+router.post('/upload',security.check, controllerHandler(uploadController.uploadVideo)); //new
 
 //STREAM
 router.get('/video', controllerHandler(streamController.stream));

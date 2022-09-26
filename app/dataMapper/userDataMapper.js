@@ -32,6 +32,7 @@ module.exports = {
 	},
 
 	async addUser(form) {
+		debug(form)
 
 		const query = `SELECT * FROM add_user($1);`;
 		const value = [form];

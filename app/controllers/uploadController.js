@@ -1,5 +1,4 @@
 const debug = require('debug')('uploadController');
-const myVideoDataMapper = require ('../dataMapper/myVideoDataMapper');
 const ffmpeg = require('./ffmpegController');
 const { v4: uuidv4 } = require('uuid');
 const VideoDataMapper = require('../dataMapper/VideoDataMapper');

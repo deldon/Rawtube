@@ -9,18 +9,17 @@ module.exports = {
     
     addUser: async (req, res, next) => {
        
-
-        if (req.body.new_password == req.body.confirm_new_password) {
+        debug(req.body)
+        if (req.body.password == req.body.confirm_password) {
             
             const salt = await bcrypt.genSalt(10);
-            const encryptedPassword = await bcrypt.hash(req.body.new_password, salt);
+            const encryptedPassword = await bcrypt.hash(req.body.password, salt);
     
                 const form = {
-                    name: req.body.name,
+                    name: req.body.user_name,
                     email: req.body.email,
                     password: encryptedPassword,
-                    description: req.body.description,
-                    avatar: req.body.avatar
+                    url_thumbnail:'kjkj.jpeg'
                 }
      
             const newUser = await DataMapper.addUser(form);

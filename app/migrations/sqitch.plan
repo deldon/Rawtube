@@ -1,0 +1,6 @@
+%syntax-version=1.0.0
+%project=rawtube
+
+init 2022-09-27T14:26:54Z markS <mark.smaniotto@gmail.com> # initialization of db
+addVideo 2022-09-27T15:01:15Z markS <mark.smaniotto@gmail.com> # function to add a video
+userFunction 2022-09-27T15:03:09Z markS <mark.smaniotto@gmail.com> # user add and update function

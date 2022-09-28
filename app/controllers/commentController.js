@@ -11,6 +11,11 @@ module.exports = {
 
         const comments = await commentDataMapper.getAllCommentByVideoId(videoId);
 
+        comments.map((e) => {
+
+            e.user_thumbnail = process.env.URL_SERVER + '/userThumbnail/' + e.user_thumbnail
+        })
+
         const comment_number = comments.length
 
         res.json({ comment_number, comments })
@@ -27,6 +32,8 @@ module.exports = {
 
         const postComment = await commentDataMapper.postCommentByVideoId(userId, videoId, comment)
         const newComment = await commentDataMapper.getCommentById(postComment.id)
+        newComment.user_thumbnail = process.env.URL_SERVER + '/userThumbnail/' + newComment.user_thumbnail
+
 
         res.json(newComment)
 

@@ -10,6 +10,7 @@ const userController = require('../controllers/userController');
 
 const security = require('../middleware/security');
 const likeController = require('../controllers/likeController');
+const commentController = require('../controllers/commentController');
 
 // -------- LOGIN -------- //
 /**
@@ -49,7 +50,12 @@ router.post('/like/add/:videoId',security.check,controllerHandler(likeController
 router.post('/user/login', controllerHandler(userController.login)); //new
 router.post('/user/register', controllerHandler(userController.addUser)); //new
 
+// COMMENT
+router.get('/comment/:videoId', controllerHandler(commentController.getAllCommentByVideoId))
+router.post('/comment/:videoId',security.check, controllerHandler(commentController.postCommentByVideoId))
 
+
+//
 router.patch('/user/:user_id', controllerHandler(userController.updateUser));
 router.delete('/user/:user_id', controllerHandler(userController.deleteUser));
 

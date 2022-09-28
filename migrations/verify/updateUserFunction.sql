@@ -1,4 +1,4 @@
--- Verify rawtube:userFunction on pg
+-- Verify rawtube:updateUserFunction on pg
 
 BEGIN;
 

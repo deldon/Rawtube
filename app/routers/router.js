@@ -45,14 +45,15 @@ router.get('/video', controllerHandler(streamController.stream)); //new
 // LIKE
 router.post('/like/add/:videoId',security.check,controllerHandler(likeController.addLike)); // news
 
-//USER
+// USER
 router.post('/user/login', controllerHandler(userController.login)); //new
 router.post('/user/register', controllerHandler(userController.addUser)); //new
 
 
-router.patch('/user/:user_id', controllerHandler(userController.updateUser));
+router.patch('/user/',security.check, controllerHandler(userController.updateUser));
 router.delete('/user/:user_id', controllerHandler(userController.deleteUser));
 
-
+// PASSWORD
+router.patch('/user/password/',security.check, controllerHandler(userController.updatePassword))
 
 module.exports = router;

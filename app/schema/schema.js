@@ -10,3 +10,11 @@ module.exports.user = Joi.object({
     confirm_new_password: Joi.ref('new_password'),
 
 });
+
+// Validations of updatePassword datas
+module.exports.updatePassword = Joi.object({
+    old_password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+    new_password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+    repeat_password: Joi.ref('new_password'),
+
+});

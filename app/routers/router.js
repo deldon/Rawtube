@@ -35,7 +35,6 @@ router.delete('/video/:videoId',security.check, controllerHandler(videoControlle
 router.get('/channel/:userId',controllerHandler(videoController.getAllVideoByUserId)) //new
 
 
-
 // UPLOAD
 router.post('/upload',security.check, controllerHandler(uploadController.uploadVideo)); //new
 

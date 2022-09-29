@@ -16,7 +16,8 @@ module.exports = {
         from
         rawtube_commentaries 
         join rawtube_user on rawtube_commentaries.user_id = rawtube_user.id
-        where video_id = $1`
+        where video_id = $1
+        order by rawtube_commentaries.created_at desc`
 
         const values = [videoId]
         const data = (await dataBase.query(query, values)).rows;

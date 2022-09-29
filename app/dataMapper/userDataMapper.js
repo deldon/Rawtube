@@ -13,9 +13,11 @@ module.exports = {
 		rawtube_user.url_thumbnail,
 			(select count(*) from rawtube_video
 			where user_id = rawtube_user.id) as total_videos,
-			(select count(*)
-			from rawtube_user_has_like
-		where user_id = rawtube_user.id) as total_likes
+			(select 
+				count(*)
+				from rawtube_user_has_like
+				join rawtube_video on rawtube_video.id = rawtube_user_has_like.video_id
+				where rawtube_video.user_id = rawtube_user.id) as total_likes
 		from rawtube_user
 		where id = $1;`
 

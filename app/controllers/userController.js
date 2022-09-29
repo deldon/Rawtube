@@ -72,6 +72,7 @@ module.exports = {
     login: async (req,res,next)=> {
 
         const user = await DataMapper.getUserByEmail(req.body.email)
+        user.url_thumbnail = process.env.URL_SERVER + 'userThumbnail/' + user.url_thumbnail
 
         
         if(user){

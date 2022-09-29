@@ -46,11 +46,14 @@ router.get('/video', controllerHandler(streamController.stream)); //new
 router.post('/like/add/:videoId',security.check,controllerHandler(likeController.addLike)); // news
 
 // USER
+router.get('/user/',security.check, controllerHandler(userController.getMyUser));
+
 router.post('/user/login', controllerHandler(userController.login)); //new
 router.post('/user/register', controllerHandler(userController.addUser)); //new
 
 
 router.patch('/user/',security.check, controllerHandler(userController.updateUser));
+
 router.delete('/user/:user_id', controllerHandler(userController.deleteUser));
 
 // PASSWORD

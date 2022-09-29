@@ -36,7 +36,16 @@ module.exports = {
     },
 
     getMyUser: async (req, res, next) => {
-        
+        let userId = req.decoded.user.id;
+
+        const user = await DataMapper.getUserInfoById(userId);
+
+        if (user) {
+            debug(`> getMyUser()`);
+            res.json(user);
+        } else {
+            next();
+        }
     },
 
     // deleteUser: async (req, res, next) => {

@@ -35,21 +35,25 @@ module.exports = {
 
     },
 
-    deleteUser: async (req, res, next) => {
-        const userId = req.params.user_id
-        const user = await DataMapper.deleteUser(userId)
-        console.log(req.params)
-        if (user) {
-            debug(`> deleteUser()`);
-            res.json({
-                message: `user :${userId} is removed`,
-                id: Number(userId)
-            });
-        } else {
-            next();
-        }
-
+    getMyUser: async (req, res, next) => {
+        
     },
+
+    // deleteUser: async (req, res, next) => {
+    //     const userId = req.params.user_id
+    //     const user = await DataMapper.deleteUser(userId)
+    //     console.log(req.params)
+    //     if (user) {
+    //         debug(`> deleteUser()`);
+    //         res.json({
+    //             message: `user :${userId} is removed`,
+    //             id: Number(userId)
+    //         });
+    //     } else {
+    //         next();
+    //     }
+
+    // },
 
     updateUser: async (req, res, next) => {
         let userId = req.decoded.user.id

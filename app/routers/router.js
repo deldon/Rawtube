@@ -53,6 +53,7 @@ router.post('/user/register', controllerHandler(userController.addUser)); //new
 
 
 router.patch('/user/',security.check, controllerHandler(userController.updateUser));
+router.patch('/user/thumbnail/',security.check, controllerHandler(uploadController.uploadUserThumbnail));
 
 router.delete('/user/:user_id', controllerHandler(userController.deleteUser));
 

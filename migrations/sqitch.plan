@@ -6,3 +6,4 @@ init 2022-06-07T09:06:38Z deldon,,, <deldon@deldon-desktop> # init tables
 addVideo 2022-09-25T11:28:50Z llio,,, <llio@llio-desktop> # function to add a video
 userFunction 2022-09-26T20:04:21Z llio,,, <llio@llio-desktop> # user add and update function
 updateUserFunction 2022-09-28T09:27:51Z markS <mark.smaniotto@gmail.com> # Update user function
+updateUserThumbnail 2022-09-30T11:33:41Z markS <mark.smaniotto@gmail.com> # Creation of update user thumbnail function

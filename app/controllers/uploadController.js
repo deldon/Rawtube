@@ -60,7 +60,14 @@ module.exports = {
         let uploadPath;
 
         if (!req.files || Object.keys(req.files).length === 0) {
-            return res.status(400).json('No files were uploaded.');
+            return res.status(400).json('No file uploaded.');
+        }
+        debug(req.files.sampleFile.size)
+        const filesSize = req.files.sampleFile.size;
+        
+        if (filesSize > 12500000) {
+            res.status(400).json(`File size is superior to 10Mo`)
+
         }
 
         sampleFile = req.files.sampleFile;
@@ -74,27 +81,24 @@ module.exports = {
             if (err) {
                 return res.status(500).json(err);
             }
-            debug(uploadPath)
-            const userId = req.decoded.user.id;
-            const form = {
-                url_thumbnail: uploadPath
 
-            }
-            debug(form)
-            const newUserThumbnail = await userDataMapper.updateUserThumbnail(uploadPath, userId);
+            const userId = req.decoded.user.id;
+
+
+            const newUserThumbnail = await userDataMapper.updateUserThumbnail(thumbnailName, userId);
             if (newUserThumbnail) {
                 debug(`> addThumbnail()`);
 
-                res.json(newUserThumbnail)
+                if(newUserThumbnail){
+                    res.json({
+                        url_thumbnail: newUserThumbnail.url_thumbnail,
+                        uploaded: true
+                    })
+
+                }
             } else {
                 next();
             }
-            
-            // res.json({
-            //     thumbnailName,
-            //     userId
-            // });
         });
     }
-
 }

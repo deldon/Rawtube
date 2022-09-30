@@ -85,15 +85,17 @@ module.exports = {
 		return data;
 	},
 
-	async updateUserThumbnail(form, user_id) {
+	async updateUserThumbnail(thumbnailName, user_id) {
 		debug(user_id)
+
+		// const query = `SELECT * FROM update_user_thumbnail($1,$2);`;
 		const query = `UPDATE rawtube_user
 						SET 
 							url_thumbnail = $1,
 							updated_at = NOW()
 							WHERE id = $2
 							RETURNING *`;
-		const value = [form, user_id];
+		const value = [thumbnailName, user_id];
 		debug(value)
 		const data = (await dataBase.query(query, value)).rows[0];
 		

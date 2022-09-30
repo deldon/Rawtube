@@ -12,26 +12,46 @@ const security = require('../middleware/security');
 const likeController = require('../controllers/likeController');
 const commentController = require('../controllers/commentController');
 
-// -------- LOGIN -------- //
-/**
- * POST /login/
- * @summary This is the summary of the endpoint
- * @tags LOGIN
- * @return {object} 200 - success response
- */
-
-router.get('/opop/',security.pass,(req,res)=>{
-    res.json(req.decoded)
-})
 
 
 // VIDEO
+/**
+ * GET /video/{position}
+ * @summary Give a video by relevance with a presise position
+ * @tags VIDEO
+ * @param {integer} position.path.required - position param 
+ * @return {object} 200 - success response
+ */
 router.get('/video/:position/',security.pass, controllerHandler(videoController.getAllVideoByRelevance)); //new
+
+/**
+ * GET /video/{position}/{userId}
+ * @summary gives the video of a user with a presized position
+ * @tags VIDEO
+ * @param {integer} position.path.required - position param 
+ * @param {integer} userId.path.required - user_id param 
+ * @return {object} 200 - success response
+ */
 router.get('/video/:position/:userId',security.pass, controllerHandler(videoController.getAllVideoByUserById)); //new
 
+/**
+ * DELETE /video/{videoId}
+ * @summary Delete video by id
+ * @tags VIDEO
+ * @param {integer} videoId.path.required - position param 
+ * @return {object} 200 - success response
+ * @security BearerAuth
+ */
 router.delete('/video/:videoId',security.check, controllerHandler(videoController.deleteVideoById)) //new
 
 // CHANNEL
+/**
+ * GET /channel/{userId}
+ * @summary Give info on the user and the list of these videos
+ * @tags CHANNEL
+ * @param {integer} userId.path.required - user_id param 
+ * @return {object} 200 - success response
+ */
 router.get('/channel/:userId',controllerHandler(videoController.getAllVideoByUserId)) //new
 
 

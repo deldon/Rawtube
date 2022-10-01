@@ -8,6 +8,7 @@ const options = {
   info: {
     version: '1.0.0',
     title: 'RawTube',
+    description: "This is a api for a RowTube.",
     license: {
       name: 'MIT',
     },

@@ -48,6 +48,18 @@ module.exports = {
         }
     },
 
+    get5UserByName: async (req, res, next) => {
+        let userName = req.params.userName;
+        const users = await DataMapper.getUsersByName(userName);
+        debug(users)
+        if (users) {
+            debug(`> get5UserByName()`);
+            res.json(users);
+        } else {
+            next();
+        }
+    },
+
     deleteUser: async (req, res, next) => {
         const userId = req.params.user_id
         const user = await DataMapper.deleteUser(userId)

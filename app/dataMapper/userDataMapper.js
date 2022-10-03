@@ -54,6 +54,30 @@ module.exports = {
 
 	},
 
+	async getUsersByName(userName) { // new
+
+		const query = `
+		SELECT
+		id,
+		name
+		FROM rawtube_user
+			WHERE name LIKE ('%'||$1||'%')
+			LIMIT 5
+			`;
+
+		const values = [userName];
+		debug(values)
+		const data = (await dataBase.query(query, values)).rows;
+		debug(data)
+		debug(`> getUsersByName()`);
+		if (!data) {
+			throw new ApiError('No data found for > getUsersByName()', 400);
+		}
+
+		return data;
+
+	},
+
 	async addUser(form) {
 		debug(form)
 
@@ -88,7 +112,6 @@ module.exports = {
 	async updateUserThumbnail(thumbnailName, user_id) {
 		debug(user_id)
 
-		// const query = `SELECT * FROM update_user_thumbnail($1,$2);`;
 		const query = `UPDATE rawtube_user
 						SET 
 							url_thumbnail = $1,

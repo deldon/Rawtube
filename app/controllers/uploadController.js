@@ -64,7 +64,7 @@ module.exports = {
         }
         debug(req.files.sampleFile.size)
         const filesSize = req.files.sampleFile.size;
-        
+
         if (filesSize > 12500000) {
             res.status(400).json(`File size is superior to 10Mo`)
 
@@ -89,7 +89,7 @@ module.exports = {
             if (newUserThumbnail) {
                 debug(`> addThumbnail()`);
 
-                if(newUserThumbnail){
+                if (newUserThumbnail) {
                     res.json({
                         url_thumbnail: newUserThumbnail.url_thumbnail,
                         uploaded: true

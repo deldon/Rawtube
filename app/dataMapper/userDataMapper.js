@@ -33,6 +33,57 @@ module.exports = {
 
 	},
 
+	async getMyUserById(userId) { // new
+
+		const query = `
+		select
+		rawtube_user.id,
+		rawtube_user.name,
+		rawtube_user.url_thumbnail,
+		rawtube_user.email
+		from rawtube_user
+		where id = $1;`
+
+		const values = [userId]
+		const data = (await dataBase.query(query, values)).rows[0];
+
+		debug(`> getUserInfoById()`);
+		if (!data) {
+			throw new ApiError('No data found for > getUserInfoById()', 400);
+		}
+
+		return data;
+
+	},
+
+	async getUsersByName(userName) { // new
+
+		const query = `
+		SELECT
+		id,
+		name
+		FROM rawtube_user
+			WHERE name LIKE ('%'||$1||'%')
+			LIMIT 5`;
+
+		const values = [userName];
+
+		const data = (await dataBase.query(query, values)).rows;
+		debug(data)
+		debug(data.length)
+		debug(`> getUsersByName()`);
+		if (!data) {
+			throw new ApiError('No data found for > getUsersByName()', 400);
+		}
+		
+		if (data.length === 0) {
+			return {"err": "Aucun utilisateur trouvé"}
+		}
+
+		return data;
+
+	},
+
 	async addUser(form) {
 		debug(form)
 
@@ -53,12 +104,33 @@ module.exports = {
 
 		const query = `SELECT * FROM update_user($1,$2);`;
 		const value = [form, user_id];
-
+		
 		const data = (await dataBase.query(query, value)).rows[0];
 
 		debug(`> updateUser()`);
 		if (!data) {
 			throw new ApiError('No data found for > updateUser()', 400);
+		}
+
+		return data;
+	},
+
+	async updateUserThumbnail(thumbnailName, user_id) {
+		debug(user_id)
+
+		const query = `UPDATE rawtube_user
+						SET 
+							url_thumbnail = $1,
+							updated_at = NOW()
+							WHERE id = $2
+							RETURNING *`;
+		const value = [thumbnailName, user_id];
+		debug(value)
+		const data = (await dataBase.query(query, value)).rows[0];
+		
+		debug(`> updateThumbnail()`);
+		if (!data) {
+			throw new ApiError('No data found for > updateThumbnail()', 400);
 		}
 
 		return data;
@@ -73,7 +145,6 @@ module.exports = {
 
 		const value = [user_id];
 		const data = (await dataBase.query(query, value)).rows[0];
-
 		debug(`> deleteUser()`);
 		if (!data) {
 			throw new ApiError('No data found for > deleteUser()', 400);
@@ -97,7 +168,7 @@ module.exports = {
 		return data;
 	},
 
-	async userIsExist(userId){ // new
+	async userIsExist(userId) { // new
 
 		const query = `
 			select id
@@ -106,14 +177,54 @@ module.exports = {
 
 		const values = [userId]
 
-		const data = (await dataBase.query(query,values)).rows[0]
+		const data = (await dataBase.query(query, values)).rows[0]
 
 		if (!data) {
 			return false
-		}else{
+		} else {
 			return true
 		}
 
 	},
+
+
+// PASSWORD
+
+	async updatePassword(new_password, user_id) {
+
+		const query = `
+        UPDATE rawtube_user
+        SET 
+        password = $1,
+        updated_at = NOW()
+        WHERE id = $2
+        RETURNING id
+      ;`;
+		debug(new_password)
+		const value = [new_password, user_id];
+
+		const data = (await dataBase.query(query, value)).rows[0];
+		debug(`> updatePassword()`);
+		if (!data) {
+			throw new ApiError('No data found for > updatePassword()', 400);
+		}
+
+		return data;
+	},
+
+	async getPasswordById(user_id) {
+
+		const query = `SELECT password FROM rawtube_user WHERE id = $1`;
+
+		const value = [user_id];
+
+		const data = (await dataBase.query(query, value)).rows[0];
+		debug(`> getPasswordById()`);
+		if (!data) {
+			throw new ApiError('No data found for > getPasswordById()', 404);
+		}
+
+		return data;
+	}
 
 }

@@ -51,7 +51,8 @@ module.exports = {
     get5UserByName: async (req, res, next) => {
         let userName = req.params.userName;
         const users = await DataMapper.getUsersByName(userName);
-        debug(users)
+        debug(users.length)
+        
         if (users) {
             debug(`> get5UserByName()`);
             res.json(users);
@@ -63,7 +64,7 @@ module.exports = {
     deleteUser: async (req, res, next) => {
         const userId = req.params.user_id
         const user = await DataMapper.deleteUser(userId)
-        console.log(req.params)
+
         if (user) {
             debug(`> deleteUser()`);
             res.json({
@@ -119,7 +120,7 @@ module.exports = {
         if (data) {
             debug(`> updatePassword()`);
             res.json({
-                "password_changed":true
+                "password_changed": true
             });
         } else {
             next();

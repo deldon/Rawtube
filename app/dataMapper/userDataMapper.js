@@ -62,16 +62,20 @@ module.exports = {
 		name
 		FROM rawtube_user
 			WHERE name LIKE ('%'||$1||'%')
-			LIMIT 5
-			`;
+			LIMIT 5`;
 
 		const values = [userName];
-		debug(values)
+
 		const data = (await dataBase.query(query, values)).rows;
 		debug(data)
+		debug(data.length)
 		debug(`> getUsersByName()`);
 		if (!data) {
 			throw new ApiError('No data found for > getUsersByName()', 400);
+		}
+		
+		if (data.length === 0) {
+			return {"err": "Aucun utilisateur trouvé"}
 		}
 
 		return data;

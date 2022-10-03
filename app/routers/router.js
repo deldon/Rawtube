@@ -47,7 +47,7 @@ router.post('/like/add/:videoId',security.check,controllerHandler(likeController
 
 // USER
 router.get('/user/',security.check, controllerHandler(userController.getMyUser));
-router.get('/user/search/:userName', controllerHandler(userController.get5UserByName));
+router.get('/user/search/:userName',security.check, controllerHandler(userController.get5UserByName));
 
 router.post('/user/login', controllerHandler(userController.login)); //new
 router.post('/user/register', controllerHandler(userController.addUser)); //new

@@ -1,5 +1,8 @@
 const express = require('express');
-const router = require('./routers/router');
+//const router = require('./routers/router');
+const videoRouter = require('./routers/videoRouter');
+const userRouter = require('./routers/userRouter');
+const likeCommentRouter = require('./routers/likeCommentRouter');
 const session = require('express-session');
 const expressJSDocSwagger = require('express-jsdoc-swagger');
 var cors = require('cors')
@@ -58,20 +61,14 @@ app.set('views', './app/views');
 
 app.use(express.static('./public'));
 
-// app.use(session({
-//     secret: 'process.env.SECRET_KEY',
-//     resave: false,
-//     saveUninitialized: true,
-
-//     // cookie: { 
-//     //     secure: false,  // if true only transmit cookie over https
-//     //     httpOnly: true // prevents client side JS from reading the cookie
-//     // }
-// }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(router);
+//app.use(router);
+
+app.use(videoRouter);
+app.use(userRouter);
+app.use(likeCommentRouter);
 
 module.exports = app;

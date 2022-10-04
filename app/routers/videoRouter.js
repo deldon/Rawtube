@@ -6,15 +6,10 @@ const controllerHandler = require('../helpers/controllerHandler');
 const uploadController = require('../controllers/uploadController');
 const streamController = require('../controllers/streamController');
 const videoController = require('../controllers/videoController');
-const userController = require('../controllers/userController');
 
 const security = require('../middleware/security');
-const likeController = require('../controllers/likeController');
-const commentController = require('../controllers/commentController');
 
 
-
-// ----- VIDEO
 /**
  * GET /video/{position}
  * @summary Give a video by relevance with a presise position
@@ -125,36 +120,5 @@ router.get('/channel/:userId', controllerHandler(videoController.getAllVideoByUs
  */
 router.post('/upload', security.check, controllerHandler(uploadController.uploadVideo)); //new
 
-
-// ----- LIKE
-/**
- * POST /like/add/{videoId}
- * @summary If the video is not liked, we like it and if the video is already liked, we dislike it
- * @tags LIKE
- * @param {integer} videoId.path.required - video_id param 
- * @return {object} 200 - success response
- * @security BearerAuth
- */
-router.post('/like/add/:videoId', security.check, controllerHandler(likeController.addLike)); // news
-
-// USER
-router.get('/user/',security.check, controllerHandler(userController.getMyUser));
-router.get('/user/search/:userName',security.check, controllerHandler(userController.get5UserByName));
-
-router.post('/user/login', controllerHandler(userController.login)); //new
-router.post('/user/register', controllerHandler(userController.addUser)); //new
-
-// ----- COMMENT
-router.get('/comment/:videoId', controllerHandler(commentController.getAllCommentByVideoId))
-router.post('/comment/:videoId', security.check, controllerHandler(commentController.postCommentByVideoId))
-
-
-router.patch('/user/',security.check, controllerHandler(userController.updateUser));
-router.patch('/user/thumbnail/',security.check, controllerHandler(uploadController.uploadUserThumbnail));
-
-router.delete('/user/:user_id', controllerHandler(userController.deleteUser));
-
-// PASSWORD
-router.patch('/user/password/',security.check, controllerHandler(userController.updatePassword))
 
 module.exports = router;

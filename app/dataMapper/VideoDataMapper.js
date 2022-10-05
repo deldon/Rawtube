@@ -218,7 +218,7 @@ module.exports = {
 	async getVideoByReleaseDate() {
 
 		const query = `SELECT 
-        rawtube_video.id,
+        // rawtube_video.id,
         rawtube_video.title,
         rawtube_video.url_thumbnail,
         rawtube_video.duration,

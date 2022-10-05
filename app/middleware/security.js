@@ -8,7 +8,7 @@ module.exports = {
     check: (req, res, next) => {
 
 
-
+        debug(req.headers['authorization'])
         // Token un let token then we slice the token bearer
         let token = req.headers['x-access-token'] || req.headers['authorization'];
         if (!!token && token.startsWith('Bearer ')) {

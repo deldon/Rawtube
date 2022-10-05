@@ -114,7 +114,7 @@ router.get('/channel/:userId', controllerHandler(videoController.getAllVideoByUs
 /**
  * POST /upload/
  * @summary upload a video
- * @tags UPLOAD
+ * @tags VIDEO
  * @return {object} 200 - success response
  * @security BearerAuth
  */

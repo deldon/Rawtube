@@ -17,9 +17,9 @@ const options = {
     },
   },
   security: {
-    BasicAuth: {
+    BearerAuth: {
       type: 'http',
-      scheme: 'basic',
+      scheme: 'Bearer',
     },
   },
   // Base directory which we use to locate your JSDOC files

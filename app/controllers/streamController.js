@@ -20,7 +20,7 @@ module.exports = {
         const videoPath = "./public/video/" + data.url_file;
         const videoSize = fs.statSync(videoPath).size;
 
-        const CHUNK_SIZE = 10 ** 6; // 1MB 
+        const CHUNK_SIZE = 9 ** 6; // 1MB 
         const start = Number(range.replace(/\D/g, ""));
         const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
 

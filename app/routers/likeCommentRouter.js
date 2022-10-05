@@ -16,6 +16,11 @@ const commentController = require('../controllers/commentController');
  * @param {integer} videoId.path.required - video_id param 
  * @return {object} 200 - success response
  * @security BearerAuth
+ * @example response - 200 - example success response
+ * {
+ * 	"liked": true,
+ * 	"newLikeNumber": "3"
+ * }
  */
 router.post('/like/add/:videoId', security.check, controllerHandler(likeController.addLike)); // news
 

@@ -28,16 +28,17 @@ module.exports = {
             }
 
             const videoId = uuidv4();
+            const thumbnailId = uuidv4();
 
             const duration = await ffmpeg.videoDuration(sampleFile.name);
 
-            await ffmpeg.thumbnail(sampleFile.name, videoId, duration);
+            await ffmpeg.thumbnail(sampleFile.name, thumbnailId, duration);
             ffmpeg.encoder(sampleFile.name, videoId);
 
             const form = {
                 url_file: videoId + '.webm',
                 is_encoded: false,
-                url_thumbnail: videoId + '.jpg',
+                url_thumbnail: thumbnailId + '.jpg',
                 duration: duration,
                 user_id: req.decoded.user.id
             }

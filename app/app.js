@@ -3,7 +3,6 @@ const express = require('express');
 const videoRouter = require('./routers/videoRouter');
 const userRouter = require('./routers/userRouter');
 const likeCommentRouter = require('./routers/likeCommentRouter');
-const session = require('express-session');
 const expressJSDocSwagger = require('express-jsdoc-swagger');
 var cors = require('cors')
 
@@ -55,9 +54,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-app.set('view engine', 'ejs');
-app.set('views', './app/views');
 
 app.use(express.static('./public'));
 

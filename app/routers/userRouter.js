@@ -51,16 +51,37 @@ router.get('/user/',security.check, controllerHandler(userController.getMyUser))
  */
 router.get('/user/search/:userName', controllerHandler(userController.get5UserByName));
 
-
+/**
+ * User
+ * @typedef {object} UserLogin
+ * @property {string} email - The user email
+ * @property {string} password - The user password
+ */
+/**
+ * POST /user/login
+ * @summary Login of a user
+ * @tags USER
+ * @param {UserLogin} request.body.required - UserRegistry json
+ * @return {object} 200 - success response
+ * @example response - 200 - example success response
+ * {
+ *  "id": 15,
+ * "name": "Jeanje",
+ * "email": "testsearch10@gmail.com",
+ * "url_thumbnail": "user.jpg",
+ * "created_at": "2022-10-05T13:23:34.833Z",
+ * "updated_at": "2022-10-05T13:23:34.833Z"
+ *  }
+ */
 router.post('/user/login', controllerHandler(userController.login)); //new
 
 /**
  * User
  * @typedef {object} UserRegistry
- * @property {string} user_name - The title
- * @property {string} email - The artist
- * @property {string} password - image cover - binary
- * @property {string} confirm_password - The year - int64
+ * @property {string} user_name - The user name
+ * @property {string} email - The user email
+ * @property {string} password - The user password
+ * @property {string} confirm_password - The user confirmation password
  */
 /**
  * POST /user/register
@@ -111,6 +132,25 @@ router.patch('/user/thumbnail/',security.check, controllerHandler(uploadControll
 router.delete('/user/:user_id', controllerHandler(userController.deleteUser));
 
 // PASSWORD
+/**
+ * User
+ * @typedef {object} UserPatchPassword
+ * @property {string} new_password - The new password
+ * @property {string} old_password - The old password
+ * @property {string} repeat_password - The repeat password
+ */
+/**
+ * PATCH /user/password/
+ * @summary Update user password
+ * @tags USER
+ * @security BearerAuth
+ * @param {UserPatchPassword} request.body.required - UserPatchPassword json
+ * @return {object} 200 - success response
+ * @example response - 200 - example success response
+ * {
+ *  "password_changed": true
+ * }
+ */
 router.patch('/user/password/',security.check, controllerHandler(userController.updatePassword))
 
 module.exports = router;

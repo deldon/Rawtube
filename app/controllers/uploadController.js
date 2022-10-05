@@ -1,5 +1,6 @@
 const debug = require('debug')('uploadController');
 const ffmpeg = require('./ffmpegController');
+
 const {
     v4: uuidv4
 } = require('uuid');
@@ -42,9 +43,13 @@ module.exports = {
             }
 
             const newVideo = await VideoDataMapper.addVideo(form)
+       
+
+          
 
             if (newVideo) {
                 debug(`> addVideo()`);
+                newVideo.url_thumbnail = process.env.URL_SERVER + 'thumbnail/' + newVideo.url_thumbnail
 
                 res.json(newVideo)
             } else {

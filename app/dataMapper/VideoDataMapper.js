@@ -9,7 +9,6 @@ module.exports = {
 		const query =
 			`select 
 		rawtube_video.id as video_id,
-		rawtube_video.url_file as url_file, 
 		rawtube_user.id as user_id,
 		rawtube_user.name as user_name,
 		rawtube_user.url_thumbnail as user_url_thumbnail,
@@ -42,7 +41,6 @@ module.exports = {
 		const query =
 			`select 
 		rawtube_video.id as video_id,
-		rawtube_video.url_file as url_file, 
 		rawtube_user.id as user_id,
 		rawtube_user.name as user_name,
 		rawtube_user.url_thumbnail as user_url_thumbnail,
@@ -79,6 +77,7 @@ module.exports = {
 		id,
 		url_thumbnail,
 		"views",
+		is_encoded,
 		ROW_NUMBER() OVER(ORDER BY created_at desc) AS POSITION
 		from rawtube_video 
 		where user_id = $1                                     -- user id
@@ -98,7 +97,7 @@ module.exports = {
 
 	async addVideo(obj) {
 
-		const query = `SELECT * FROM add_video($1);`;
+		const query = `SELECT id, is_encoded, url_thumbnail, duration, user_id, created_at FROM add_video($1);`;
 		const value = [obj];
 
 		const data = (await dataBase.query(query, value)).rows[0];
@@ -186,75 +185,16 @@ module.exports = {
 		return true;
 	},
 
-	/// a supr
+	async getUrlFileByVideoId(videoId) {
 
-	async getVideoById(id) {
+		const query = `select url_file from rawtube_video where id = $1`
 
-		const query = `SELECT 
-    	rawtube_video.id,
-    	rawtube_video.title,
-    	rawtube_video.url_file,
-    	rawtube_video.duration,
-    	rawtube_video.description,
-    	rawtube_video.views,
-    	rawtube_user.id AS user_id,
-    	rawtube_user.name AS user_name,
-    	rawtube_user.avatar AS user_avatar
-    	FROM rawtube_video
-    	JOIN rawtube_user ON rawtube_user.id = rawtube_video.user_id
-    	WHERE rawtube_video.id = $1;`;
+		const values = [videoId];
+		const data = (await dataBase.query(query,values)).rows[0];
 
-		const values = [id]
-		const data = (await dataBase.query(query, values)).rows[0];
-
-		debug(`> getVideoById()`);
+		debug(`> getUrlFileByVideoId()`);
 		if (!data) {
-			throw new ApiError('No data found for > getVideoById()', 400);
-		}
-
-		return data;
-	},
-
-	async getVideoByReleaseDate() {
-
-		const query = `SELECT 
-        rawtube_video.id,
-        rawtube_video.title,
-        rawtube_video.url_thumbnail,
-        rawtube_video.duration,
-        rawtube_video.views,
-        rawtube_user.id AS user_id,
-        rawtube_user.name AS user_name,
-        rawtube_user.avatar AS user_avatar
-        FROM rawtube_video
-        JOIN rawtube_user ON rawtube_user.id = rawtube_video.user_id
-        WHERE rawtube_video.public = true
-        ORDER BY rawtube_video.release_date;`;
-
-		const data = (await dataBase.query(query)).rows;
-
-		debug(`> getVideoByReleaseDate()`);
-		if (!data) {
-			throw new ApiError('No data found for > addUser()', 400);
-		}
-
-		return data;
-	},
-
-	async addViewsByid(id, newValue) {
-
-
-		const query = `UPDATE rawtube_video
-    	SET views = $2
-    	WHERE id = $1
-		RETURNING *`;
-
-		const values = [Number(id), newValue]
-		const data = (await dataBase.query(query, values)).rows[0];
-
-		debug(`> addViewsByid()`);
-		if (!data) {
-			throw new ApiError('No data found for > addViewsByid()', 400);
+			throw new ApiError('No data found for > incrementViews()', 400);
 		}
 
 		return data;

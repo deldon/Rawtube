@@ -19,7 +19,6 @@ const security = require('../middleware/security');
  * @example response - 200 - example success response
  * {
  * 	"video_id": 19,
- * 	"url_file": "http://localhost:5000/video?v=0171454f-10d1-4681-b372-2e67290f29b5.webm",
  * 	"user_id": 2,
  * 	"user_name": "mark",
  * 	"user_url_thumbnail": "http://localhost:5000/userThumbnail/phil.jpg",
@@ -28,7 +27,7 @@ const security = require('../middleware/security');
  * 	"user_is_liked": false
  * }
  */
-router.get('/video/:position/', security.pass, controllerHandler(videoController.getAllVideoByRelevance)); //new
+router.get('/video/:position/', security.pass, controllerHandler(videoController.getAllVideoByRelevance));
 
 /**
  * GET /video/{position}/{userId}
@@ -40,7 +39,6 @@ router.get('/video/:position/', security.pass, controllerHandler(videoController
  * @example response - 200 - example success response
  * {
  * 	"video_id": 19,
- * 	"url_file": "http://localhost:5000/video?v=0171454f-10d1-4681-b372-2e67290f29b5.webm",
  * 	"user_id": 2,
  * 	"user_name": "mark",
  * 	"user_url_thumbnail": "http://localhost:5000/userThumbnail/phil.jpg",
@@ -49,28 +47,20 @@ router.get('/video/:position/', security.pass, controllerHandler(videoController
  * 	"user_is_liked": false
  * }
  */
-router.get('/video/:position/:userId', security.pass, controllerHandler(videoController.getAllVideoByUserById)); //new
-
-/**
- * GET /video/
- * @summary retrieve the video stream
- * @tags VIDEO
- * @param {string} v.query.required - Video name
- * @return {object} 200 - success response
- */
-router.get('/video', controllerHandler(streamController.stream)); //new
+router.get('/video/:position/:userId', security.pass, controllerHandler(videoController.getAllVideoByUserById));
 
 /**
  * DELETE /video/{videoId}
  * @summary Delete video by id
  * @tags VIDEO
- * @param {integer} videoId.path.required - position param 
+ * @param {integer} videoId.path.required - Video id
  * @return {object} 200 - success response
  * @security BearerAuth
  */
-router.delete('/video/:videoId', security.check, controllerHandler(videoController.deleteVideoById)) //new
+router.delete('/video/:videoId', security.check, controllerHandler(videoController.deleteVideoById));
 
-// ----- CHANNEL
+// ----- CHANNEL ----- //
+
 /**
  * GET /channel/{userId}
  * @summary Give info on the user and the list of these videos
@@ -91,7 +81,7 @@ router.delete('/video/:videoId', security.check, controllerHandler(videoControll
  *			"id": 16,
  *			"url_thumbnail": "http://localhost:5000//thumbnail/1da8c3eb-984b-4d04-8485-4093bef0ed78.jpg",
  *			"views": 715,
- *  			"position": "1"
+ *  		"position": "1"
  * 		},
  *		{
  * 			"id": 15,
@@ -108,17 +98,42 @@ router.delete('/video/:videoId', security.check, controllerHandler(videoControll
  *	]
  *}
  */
-router.get('/channel/:userId', controllerHandler(videoController.getAllVideoByUserId)) //new
+router.get('/channel/:userId', controllerHandler(videoController.getAllVideoByUserId));
 
-// ----- UPLOAD
+// ----- STREAM -----//
+/**
+ * GET /stream/
+ * @summary retrieve the video stream
+ * @tags VIDEO
+ * @param {string} videoId.path.required - Video id
+ * @return {object} 200 - success response
+ */
+ router.get('/stream/:videoId', controllerHandler(streamController.stream));
+
+// ----- UPLOAD ----- //
+/**
+ * A Video
+ * @typedef {object} Video
+ * @property {string} sampleFile - Video file - binary
+ */
 /**
  * POST /upload/
  * @summary upload a video
  * @tags VIDEO
+ * @param {Video} request.body.required - Video file - multipart/form-data
  * @return {object} 200 - success response
  * @security BearerAuth
+ * @example response - 200 - example success response
+ * {
+ *	"id": 26,
+ *	"is_encoded": false,
+ *	"url_thumbnail": "http://localhost:5000/thumbnail/0a119c27-3ae1-450b-be88-c8ca858a28ea.jpg",
+ *	"duration": 14,
+ *	"user_id": 16,
+ *	"created_at": "2022-10-05T15:08:30.970Z"
+ * }
  */
-router.post('/upload', security.check, controllerHandler(uploadController.uploadVideo)); //new
+router.post('/upload', security.check, controllerHandler(uploadController.uploadVideo));
 
 
 module.exports = router;

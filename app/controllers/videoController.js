@@ -14,7 +14,7 @@ module.exports = {
 
             const data = await videoDataMapper.getAllVideoByRelevance(position);
 
-            data.url_file = process.env.URL_SERVER + 'video?v=' + data.url_file
+           
             data.user_url_thumbnail = process.env.URL_SERVER + 'userThumbnail/' + data.user_url_thumbnail
 
             data.user_is_liked = false
@@ -60,7 +60,6 @@ module.exports = {
             if (position > 0 && Number.isInteger(position)) {
 
                 const data = await videoDataMapper.getAllVideoByUserById(position, userId)
-                data.url_file = process.env.URL_SERVER + 'video/?v=' + data.url_file
                 data.user_url_thumbnail = process.env.URL_SERVER + 'userThumbnail/' + data.user_url_thumbnail
 
                 data.user_is_liked = false

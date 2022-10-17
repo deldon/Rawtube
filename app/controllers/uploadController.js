@@ -1,5 +1,6 @@
 const debug = require('debug')('uploadController');
 const ffmpeg = require('./ffmpegController');
+
 const {
     v4: uuidv4
 } = require('uuid');
@@ -27,24 +28,29 @@ module.exports = {
             }
 
             const videoId = uuidv4();
+            const thumbnailId = uuidv4();
 
             const duration = await ffmpeg.videoDuration(sampleFile.name);
 
-            await ffmpeg.thumbnail(sampleFile.name, videoId, duration);
+            await ffmpeg.thumbnail(sampleFile.name, thumbnailId, duration);
             ffmpeg.encoder(sampleFile.name, videoId);
 
             const form = {
                 url_file: videoId + '.webm',
                 is_encoded: false,
-                url_thumbnail: videoId + '.jpg',
+                url_thumbnail: thumbnailId + '.jpg',
                 duration: duration,
                 user_id: req.decoded.user.id
             }
 
             const newVideo = await VideoDataMapper.addVideo(form)
+       
+
+          
 
             if (newVideo) {
                 debug(`> addVideo()`);
+                newVideo.url_thumbnail = process.env.URL_SERVER + 'thumbnail/' + newVideo.url_thumbnail
 
                 res.json(newVideo)
             } else {

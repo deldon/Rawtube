@@ -1,24 +1,30 @@
 const debug = require('debug')('streamController');
+const videoDataMapper = require('../dataMapper/VideoDataMapper')
 const fs = require('fs');
 
 module.exports = {
 
-    stream: (req,res) => {
+    stream:async (req,res) => {
 
+        const videoId = req.params.videoId
+
+        const data = (await videoDataMapper.getUrlFileByVideoId(videoId))
+
+        
         const range = req.headers.range;
 
         if (!range) {
             res.status(400).send("Requires Range header");
         }
     
-        const videoPath = "./public/video/" + req.query.v;
+        const videoPath = "./public/video/" + data.url_file;
         const videoSize = fs.statSync(videoPath).size;
 
-        const CHUNK_SIZE = 10 ** 6; // 1MB
+        const CHUNK_SIZE = 9 ** 6; // 1MB 
         const start = Number(range.replace(/\D/g, ""));
         const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
 
-        debug('stream called | ', req.query.v + ' | ' + start);
+        debug('stream called | ', data.url_file + ' | ' + start);
 
         const contentLength = end - start + 1;
         const headers = {
